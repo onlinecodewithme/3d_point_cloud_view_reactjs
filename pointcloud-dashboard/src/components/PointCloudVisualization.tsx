@@ -142,16 +142,17 @@ const PointCloudVisualization: React.FC = () => {
             console.log('Received cloud_map data:', message);
             
             // Parse PointCloud2 message
-            const points = parsePointCloud2(message);
-            if (points && points.length > 0) {
+            const result = parsePointCloud2(message);
+            if (result && result.points.length > 0) {
               const pointCloudData: PointCloudData = {
-                points: points,
+                points: result.points,
+                colors: result.colors,
                 timestamp: Date.now()
               };
               
               setPointCloudData(pointCloudData);
-              setPointCount(points.length / 3);
-              setConnectionStatus(`Connected - ${(points.length / 3).toLocaleString()} points`);
+              setPointCount(result.points.length / 3);
+              setConnectionStatus(`Connected - ${(result.points.length / 3).toLocaleString()} points`);
             }
           } catch (error) {
             console.error('Error processing point cloud data:', error);
@@ -176,8 +177,8 @@ const PointCloudVisualization: React.FC = () => {
     };
   }, []);
 
-  // Parse PointCloud2 message to Float32Array
-  const parsePointCloud2 = (message: any): Float32Array | null => {
+  // Parse PointCloud2 message to Float32Array with RGB colors
+  const parsePointCloud2 = (message: any): { points: Float32Array; colors: Float32Array } | null => {
     try {
       if (!message.data || message.data.length === 0) {
         return null;
@@ -189,12 +190,13 @@ const PointCloudVisualization: React.FC = () => {
       const pointStep = message.point_step;
       const rowStep = message.row_step;
       
-      // Find field offsets for x, y, z
-      let xOffset = -1, yOffset = -1, zOffset = -1;
+      // Find field offsets for x, y, z, and rgb
+      let xOffset = -1, yOffset = -1, zOffset = -1, rgbOffset = -1;
       for (const field of message.fields) {
         if (field.name === 'x') xOffset = field.offset;
         if (field.name === 'y') yOffset = field.offset;
         if (field.name === 'z') zOffset = field.offset;
+        if (field.name === 'rgb' || field.name === 'rgba') rgbOffset = field.offset;
       }
 
       if (xOffset === -1 || yOffset === -1 || zOffset === -1) {
@@ -209,9 +211,10 @@ const PointCloudVisualization: React.FC = () => {
         dataView.setUint8(i, binaryData.charCodeAt(i));
       }
 
-      // Extract points
+      // Extract points and colors
       const numPoints = width * height;
       const points = new Float32Array(numPoints * 3);
+      const colors = new Float32Array(numPoints * 3);
       let pointIndex = 0;
 
       for (let i = 0; i < numPoints; i++) {
@@ -226,12 +229,37 @@ const PointCloudVisualization: React.FC = () => {
           points[pointIndex * 3] = x;
           points[pointIndex * 3 + 1] = y;
           points[pointIndex * 3 + 2] = z;
+
+          // Extract RGB color if available
+          if (rgbOffset !== -1) {
+            // RGB is typically packed as a 32-bit float or uint32
+            const rgbValue = dataView.getUint32(pointOffset + rgbOffset, true);
+            
+            // Extract RGB components (assuming RGB packed format)
+            const r = ((rgbValue >> 16) & 0xFF) / 255.0;
+            const g = ((rgbValue >> 8) & 0xFF) / 255.0;
+            const b = (rgbValue & 0xFF) / 255.0;
+            
+            colors[pointIndex * 3] = r;
+            colors[pointIndex * 3 + 1] = g;
+            colors[pointIndex * 3 + 2] = b;
+          } else {
+            // Fallback to height-based coloring if no RGB data
+            const normalizedZ = Math.max(0, Math.min(1, (z + 2) / 4));
+            colors[pointIndex * 3] = normalizedZ; // Red
+            colors[pointIndex * 3 + 1] = 1 - normalizedZ; // Green
+            colors[pointIndex * 3 + 2] = 1 - normalizedZ; // Blue
+          }
+          
           pointIndex++;
         }
       }
 
-      // Return trimmed array with only valid points
-      return points.slice(0, pointIndex * 3);
+      // Return trimmed arrays with only valid points
+      return {
+        points: points.slice(0, pointIndex * 3),
+        colors: colors.slice(0, pointIndex * 3)
+      };
     } catch (error) {
       console.error('Error parsing PointCloud2:', error);
       return null;
