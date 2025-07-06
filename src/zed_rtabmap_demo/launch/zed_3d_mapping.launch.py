@@ -15,6 +15,7 @@ from launch.actions import IncludeLaunchDescription, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.conditions import UnlessCondition, IfCondition
+from tf2_ros import StaticTransformBroadcaster
 
 import tempfile
 
@@ -36,8 +37,9 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
     parameters=[{
         'frame_id': 'zed_camera_link',
         'subscribe_rgbd': True,
-        'approx_sync': False,
-        'wait_imu_to_init': True,
+        'subscribe_imu': True,  # Enable IMU for accurate navigation
+        'approx_sync': True,  # Use approximate sync for IMU
+        'wait_imu_to_init': True,  # Wait for IMU for accurate initialization
         
         # 3D Grid mapping parameters for stable high-density mapping
         'Grid/3D': 'true',
@@ -55,18 +57,20 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         'Grid/PreVoxelFiltering': 'true',  # Re-enable for stability
         'Grid/PostFiltering': 'true',  # Re-enable for stability
         
-        # RTAB-Map's parameters for 3D dense mapping
-        'Rtabmap/DetectionRate': '1.0',
-        'Rtabmap/CreateIntermediateNodes': 'true',
-        'Rtabmap/LinearUpdate': '0.1',
-        'Rtabmap/AngularUpdate': '0.1',
+        # RTAB-Map's parameters for pure odometry mode (no loop closure at all)
+        'Rtabmap/DetectionRate': '0.0',  # Disable loop closure detection completely
+        'Rtabmap/CreateIntermediateNodes': 'false',  # Disable to prevent resets
+        'Rtabmap/LinearUpdate': '0.1',  # Standard update rate
+        'Rtabmap/AngularUpdate': '0.1',  # Standard update rate
         'Rtabmap/TimeThr': '0',
+        'Rtabmap/MaxRetrieved': '0',  # Don't retrieve any old nodes
+        'Rtabmap/StartNewMapOnLoopClosure': 'false',  # Don't start new maps
+        'Rtabmap/StatisticsLogsBufferedSize': '0',  # Disable statistics buffering
         
-        # Memory management
+        # Memory management for continuous mapping (no loop closure)
         'Mem/IncrementalMemory': 'true',
         'Mem/InitWMWithAllNodes': 'false',
-        'Mem/STMSize': '30',
-        'Mem/RehearsalSimilarity': '0.6',
+        'Mem/RecentWmRatio': '0.2',  # Limit recent working memory
         
         # Registration
         'Reg/Strategy': '1',
@@ -94,11 +98,31 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         'cloud_floor_culling_height': '0.0',
         'cloud_ceiling_culling_height': '3.0',  # Standard ceiling height
         
-        # Visual features
+        # Visual features for stable loop closure (RGB-D only, no laser)
         'Vis/MaxFeatures': '1000',
-        'Vis/MinInliers': '15',
-        'Vis/InlierDistance': '0.05',
+        'Vis/MinInliers': '20',  # Increased for stricter loop closure
+        'Vis/InlierDistance': '0.03',  # Reduced for stricter matching
         'Vis/EstimationType': '1',
+        
+        # Disable laser scan requirements (we only have RGB-D camera)
+        'RGBD/ProximityBySpace': 'false',  # Disable laser-based proximity
+        'RGBD/ProximityByTime': 'true',   # Use time-based proximity instead
+        'RGBD/ProximityMaxGraphDepth': '0',  # Disable graph-based proximity
+        'RGBD/ProximityPathMaxNeighbors': '0',  # Disable path-based proximity
+        
+        # Completely disable loop closure for continuous mapping
+        'Rtabmap/LoopThr': '0.0',  # Disable loop closure completely
+        'Mem/STMSize': '1',  # Minimal memory to prevent loop detection
+        'Mem/BadSignaturesIgnored': 'true',  # Ignore bad signatures
+        'RGBD/OptimizeFromGraphEnd': 'false',  # Disable optimization
+        'RGBD/OptimizeMaxError': '0.0',  # No optimization
+        'Rtabmap/LoopRatio': '0.0',  # No loop closure ratio
+        'Mem/RehearsalSimilarity': '0.0',  # Disable rehearsal
+        'Rtabmap/MaxRetrieved': '0',  # Don't retrieve old nodes
+        'Mem/UseOdomFeatures': 'false',  # Don't use odometry features for loop detection
+        'Mem/NotLinkedNodesKept': 'false',  # Don't keep unlinked nodes
+        'Mem/ReduceGraph': 'false',  # Don't reduce graph
+        'Kp/NNStrategy': '0',  # Disable nearest neighbor search
         
         # Keypoint detector
         'Kp/MaxFeatures': '1000',
@@ -112,7 +136,7 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         'Optimizer/Robust': 'false',
     }]
 
-    # Common remappings
+    # Common remappings with IMU for accurate navigation
     remappings=[('imu', '/zed/zed_node/imu/data')]
 
     # Use ZED odometry if specified, otherwise use RTAB-Map's visual odometry
@@ -122,6 +146,34 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         parameters[0]['subscribe_odom_info'] = True
     
     nodes = [
+        # Static transforms for robot navigation
+        # Base link to camera link transform (adjust based on your robot setup)
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='base_to_camera_tf',
+            arguments=['0', '0', '0.5', '0', '0', '0', 'base_link', 'zed_camera_link'],
+            output='screen'
+        ),
+        
+        # Camera link to IMU link transform (ZED2i specific)
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='camera_to_imu_tf',
+            arguments=['0', '0', '0', '0', '0', '0', 'zed_camera_link', 'zed_imu_link'],
+            output='screen'
+        ),
+        
+        # Map to odom transform (for navigation stack)
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='map_to_odom_tf',
+            arguments=['0', '0', '0', '0', '0', '0', 'map', 'odom'],
+            output='screen'
+        ),
+        
         # Note: ZED camera should already be running
         # We'll connect to the existing ZED topics
         
@@ -148,24 +200,8 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
             arguments=['-d']),  # Delete database on start
     ]
 
-    # Add visualization based on user choice
-    if LaunchConfiguration('launch_rviz').perform(context) in ["True", "true"]:
-        # RViz2 with OpenGL fixes
-        nodes.append(
-            Node(
-                package='rviz2', executable='rviz2', output='screen',
-                arguments=['-d', os.path.join(get_package_share_directory('zed_rtabmap_demo'), 'rviz', 'zed_3d_mapping.rviz')],
-                parameters=parameters,
-                remappings=remappings)
-        )
-    else:
-        # RTAB-Map Visualization
-        nodes.append(
-            Node(
-                package='rtabmap_viz', executable='rtabmap_viz', output='screen',
-                parameters=parameters,
-                remappings=remappings)
-        )
+    # No GUI visualization - using React dashboard instead
+    # This saves system resources and prevents GUI conflicts
 
     return nodes
 
