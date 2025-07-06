@@ -110,12 +110,29 @@ check_cuda() {
 start_services() {
     print_header "🚀 Starting Services..."
     
+    print_status "Starting Zenoh RMW daemon..."
+    print_warning "This will start zenohd and rosbridge in the background."
+    print_warning "Use 'pkill -f zenohd' and 'pkill -f rosbridge' to stop them later."
+    
+    # Start Zenoh RMW daemon in background
+    source /opt/ros/$ROS_DISTRO/setup.bash
+    ros2 run rmw_zenoh_cpp rmw_zenohd > /tmp/zenohd.log 2>&1 &
+    ZENOHD_PID=$!
+    
+    # Wait a moment for zenohd to start
+    sleep 2
+    
+    # Check if zenohd is running
+    if ps -p $ZENOHD_PID > /dev/null; then
+        print_status "Zenoh RMW daemon started (PID: $ZENOHD_PID) ✓"
+    else
+        print_error "Failed to start Zenoh RMW daemon. Check /tmp/zenohd.log for details."
+        print_warning "Continuing without Zenoh daemon..."
+    fi
+    
     print_status "Starting ROS bridge..."
-    print_warning "This will start rosbridge in the background."
-    print_warning "Use 'pkill -f rosbridge' to stop it later."
     
     # Start rosbridge in background
-    source /opt/ros/$ROS_DISTRO/setup.bash
     ros2 launch rosbridge_server rosbridge_websocket_launch.xml > /tmp/rosbridge.log 2>&1 &
     ROSBRIDGE_PID=$!
     
@@ -157,12 +174,18 @@ start_services() {
 cleanup() {
     print_header "🧹 Cleaning up..."
     
+    if [ ! -z "$ZENOHD_PID" ]; then
+        print_status "Stopping Zenoh RMW daemon (PID: $ZENOHD_PID)..."
+        kill $ZENOHD_PID 2>/dev/null || true
+    fi
+    
     if [ ! -z "$ROSBRIDGE_PID" ]; then
         print_status "Stopping ROS bridge (PID: $ROSBRIDGE_PID)..."
         kill $ROSBRIDGE_PID 2>/dev/null || true
     fi
     
-    # Kill any remaining rosbridge processes
+    # Kill any remaining processes
+    pkill -f zenohd 2>/dev/null || true
     pkill -f rosbridge 2>/dev/null || true
     
     print_status "Cleanup complete. Goodbye! 👋"

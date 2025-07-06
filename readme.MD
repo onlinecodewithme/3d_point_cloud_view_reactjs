@@ -96,6 +96,7 @@ The script will:
 - ✅ Check ROS2 and Node.js installation
 - ✅ Install rosbridge_suite automatically
 - ✅ Setup dashboard dependencies
+- ✅ Start Zenoh RMW daemon (rmw_zenohd)
 - ✅ Test CUDA acceleration (if available)
 - ✅ Start all services and open dashboard
 
@@ -127,11 +128,15 @@ npm start
 ### 3. Start ROS2 Services
 
 ```bash
-# Terminal 1: Start ROS bridge
+# Terminal 1: Start Zenoh RMW daemon
+source /opt/ros/humble/setup.bash
+ros2 run rmw_zenoh_cpp rmw_zenohd
+
+# Terminal 2: Start ROS bridge
 source /opt/ros/humble/setup.bash
 ros2 launch rosbridge_server rosbridge_websocket_launch.xml
 
-# Terminal 2: Start ZED camera (if needed)
+# Terminal 3: Start ZED camera (if needed)
 source /opt/ros/humble/setup.bash
 ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2
 ```
