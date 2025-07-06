@@ -5,6 +5,8 @@ import * as THREE from 'three';
 import PointCloudMapper from './components/PointCloudMapper';
 import RosConnection from './components/RosConnection';
 import Dashboard from './components/Dashboard';
+import RTABMapIntegration from './components/RTABMapIntegration';
+import RTABMapRosConnection from './components/RTABMapRosConnection';
 import './App.css';
 
 interface PointCloudData {
@@ -26,6 +28,23 @@ const App: React.FC = () => {
   const [voxelSize, setVoxelSize] = useState(0.05); // 5cm voxels
   const [isProcessing, setIsProcessing] = useState(false);
   const mapperRef = useRef<any>(null);
+
+  // RTAB-Map state
+  const [isRTABMapActive, setIsRTABMapActive] = useState(false);
+  const [rtabMapData, setRTABMapData] = useState<any>(null);
+  const [showOccupancyGrid, setShowOccupancyGrid] = useState(true);
+  const [showTrajectory, setShowTrajectory] = useState(true);
+  const [showLoopClosures, setShowLoopClosures] = useState(true);
+  const [gridOpacity, setGridOpacity] = useState(0.8);
+  const [mapQuality, setMapQuality] = useState('balanced');
+  const [loopClosureThreshold, setLoopClosureThreshold] = useState(0.5);
+  const [rtabMapStats, setRTABMapStats] = useState({
+    totalNodes: 0,
+    loopClosures: 0,
+    mapSize: '0 MB',
+    processingTime: 0,
+    memoryUsage: 0
+  });
 
   const handlePointCloudUpdate = (data: PointCloudData) => {
     setPointCloudData(data);
@@ -59,6 +78,45 @@ const App: React.FC = () => {
     setVoxelSize(size);
   };
 
+  // RTAB-Map control handlers
+  const handleToggleRTABMap = (active: boolean) => {
+    setIsRTABMapActive(active);
+  };
+
+  const handleResetRTABMap = () => {
+    console.log('Resetting RTAB-Map...');
+    setRTABMapData(null);
+    setRTABMapStats({
+      totalNodes: 0,
+      loopClosures: 0,
+      mapSize: '0 MB',
+      processingTime: 0,
+      memoryUsage: 0
+    });
+  };
+
+  const handleSaveRTABMap = () => {
+    console.log('Saving RTAB-Map...');
+    // Implementation would save RTAB-Map database
+  };
+
+  const handleLoadRTABMap = () => {
+    console.log('Loading RTAB-Map...');
+    // Implementation would load RTAB-Map database
+  };
+
+  const handleRTABMapUpdate = (data: any) => {
+    setRTABMapData(data);
+  };
+
+  const handleRTABMapStatusChange = (active: boolean) => {
+    // This is handled by the connection component
+  };
+
+  const handleRTABMapStatsUpdate = (stats: any) => {
+    setRTABMapStats(stats);
+  };
+
   // Simulate map point count updates (in real implementation, this would come from PointCloudMapper)
   useEffect(() => {
     if (enableMapping && pointCloudData) {
@@ -85,6 +143,24 @@ const App: React.FC = () => {
           voxelSize={voxelSize}
           onVoxelSizeChange={handleVoxelSizeChange}
           isProcessing={isProcessing}
+          isRTABMapActive={isRTABMapActive}
+          onToggleRTABMap={handleToggleRTABMap}
+          onResetRTABMap={handleResetRTABMap}
+          onSaveRTABMap={handleSaveRTABMap}
+          onLoadRTABMap={handleLoadRTABMap}
+          showOccupancyGrid={showOccupancyGrid}
+          onToggleOccupancyGrid={setShowOccupancyGrid}
+          showTrajectory={showTrajectory}
+          onToggleTrajectory={setShowTrajectory}
+          showLoopClosures={showLoopClosures}
+          onToggleLoopClosures={setShowLoopClosures}
+          gridOpacity={gridOpacity}
+          onGridOpacityChange={setGridOpacity}
+          mapQuality={mapQuality}
+          onMapQualityChange={setMapQuality}
+          loopClosureThreshold={loopClosureThreshold}
+          onLoopClosureThresholdChange={setLoopClosureThreshold}
+          rtabMapStats={rtabMapStats}
         />
       </div>
       
@@ -107,6 +183,15 @@ const App: React.FC = () => {
             enableMapping={enableMapping}
             maxMapPoints={maxMapPoints}
             voxelSize={voxelSize}
+          />
+
+          {/* RTAB-Map SLAM Integration */}
+          <RTABMapIntegration
+            rtabMapData={rtabMapData}
+            showOccupancyGrid={showOccupancyGrid}
+            showTrajectory={showTrajectory}
+            showLoopClosures={showLoopClosures}
+            gridOpacity={gridOpacity}
           />
           
           <OrbitControls 
@@ -141,6 +226,16 @@ const App: React.FC = () => {
         onPointCloudUpdate={handlePointCloudUpdate}
         onConnectionStatusChange={setIsConnected}
         onStatusMessageChange={setConnectionStatus}
+      />
+
+      {/* RTAB-Map ROS Connection */}
+      <RTABMapRosConnection
+        onRTABMapUpdate={handleRTABMapUpdate}
+        onRTABMapStatusChange={handleRTABMapStatusChange}
+        onRTABMapStatsUpdate={handleRTABMapStatsUpdate}
+        isRTABMapActive={isRTABMapActive}
+        mapQuality={mapQuality}
+        loopClosureThreshold={loopClosureThreshold}
       />
 
       {/* Performance monitoring overlay */}

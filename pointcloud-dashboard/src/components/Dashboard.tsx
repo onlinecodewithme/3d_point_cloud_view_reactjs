@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MappingControls from './MappingControls';
+import RTABMapControls from './RTABMapControls';
 
 interface DashboardProps {
   isConnected: boolean;
@@ -16,6 +17,31 @@ interface DashboardProps {
   voxelSize: number;
   onVoxelSizeChange: (size: number) => void;
   isProcessing: boolean;
+  // RTAB-Map props
+  isRTABMapActive: boolean;
+  onToggleRTABMap: (active: boolean) => void;
+  onResetRTABMap: () => void;
+  onSaveRTABMap: () => void;
+  onLoadRTABMap: () => void;
+  showOccupancyGrid: boolean;
+  onToggleOccupancyGrid: (show: boolean) => void;
+  showTrajectory: boolean;
+  onToggleTrajectory: (show: boolean) => void;
+  showLoopClosures: boolean;
+  onToggleLoopClosures: (show: boolean) => void;
+  gridOpacity: number;
+  onGridOpacityChange: (opacity: number) => void;
+  mapQuality: string;
+  onMapQualityChange: (quality: string) => void;
+  loopClosureThreshold: number;
+  onLoopClosureThresholdChange: (threshold: number) => void;
+  rtabMapStats: {
+    totalNodes: number;
+    loopClosures: number;
+    mapSize: string;
+    processingTime: number;
+    memoryUsage: number;
+  };
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ 
@@ -32,9 +58,28 @@ const Dashboard: React.FC<DashboardProps> = ({
   maxMapPoints,
   voxelSize,
   onVoxelSizeChange,
-  isProcessing
+  isProcessing,
+  isRTABMapActive,
+  onToggleRTABMap,
+  onResetRTABMap,
+  onSaveRTABMap,
+  onLoadRTABMap,
+  showOccupancyGrid,
+  onToggleOccupancyGrid,
+  showTrajectory,
+  onToggleTrajectory,
+  showLoopClosures,
+  onToggleLoopClosures,
+  gridOpacity,
+  onGridOpacityChange,
+  mapQuality,
+  onMapQualityChange,
+  loopClosureThreshold,
+  onLoopClosureThresholdChange,
+  rtabMapStats
 }) => {
   const [showMapping, setShowMapping] = useState(true);
+  const [showRTABMap, setShowRTABMap] = useState(true);
 
   const formatTimestamp = (ts?: number) => {
     if (!ts) return 'N/A';
@@ -115,6 +160,41 @@ const Dashboard: React.FC<DashboardProps> = ({
         )}
       </div>
 
+      {/* RTAB-Map SLAM Controls */}
+      <div className="rtabmap-section">
+        <div className="section-header">
+          <button 
+            className="section-toggle rtabmap-toggle"
+            onClick={() => setShowRTABMap(!showRTABMap)}
+          >
+            {showRTABMap ? '▼' : '▶'} RTAB-Map SLAM for Navigation
+          </button>
+        </div>
+        
+        {showRTABMap && (
+          <RTABMapControls
+            isRTABMapActive={isRTABMapActive}
+            onToggleRTABMap={onToggleRTABMap}
+            onResetMap={onResetRTABMap}
+            onSaveMap={onSaveRTABMap}
+            onLoadMap={onLoadRTABMap}
+            showOccupancyGrid={showOccupancyGrid}
+            onToggleOccupancyGrid={onToggleOccupancyGrid}
+            showTrajectory={showTrajectory}
+            onToggleTrajectory={onToggleTrajectory}
+            showLoopClosures={showLoopClosures}
+            onToggleLoopClosures={onToggleLoopClosures}
+            gridOpacity={gridOpacity}
+            onGridOpacityChange={onGridOpacityChange}
+            mapQuality={mapQuality}
+            onMapQualityChange={onMapQualityChange}
+            loopClosureThreshold={loopClosureThreshold}
+            onLoopClosureThresholdChange={onLoopClosureThresholdChange}
+            rtabMapStats={rtabMapStats}
+          />
+        )}
+      </div>
+
       <div style={{ marginTop: '20px', fontSize: '12px', color: '#888' }}>
         <p>Controls:</p>
         <ul style={{ margin: 0, paddingLeft: '20px' }}>
@@ -125,7 +205,7 @@ const Dashboard: React.FC<DashboardProps> = ({
       </div>
 
       <style>{`
-        .mapping-section {
+        .mapping-section, .rtabmap-section {
           margin: 16px 0;
           border: 1px solid #444;
           border-radius: 8px;
@@ -150,9 +230,17 @@ const Dashboard: React.FC<DashboardProps> = ({
           transition: all 0.3s ease;
         }
 
+        .section-toggle.rtabmap-toggle {
+          background: linear-gradient(135deg, #FF6B35, #E55A2B);
+        }
+
         .section-toggle:hover {
           background: linear-gradient(135deg, #1976D2, #1565C0);
           transform: translateY(-1px);
+        }
+
+        .section-toggle.rtabmap-toggle:hover {
+          background: linear-gradient(135deg, #E55A2B, #D14A1F);
         }
 
         .section-toggle:active {
