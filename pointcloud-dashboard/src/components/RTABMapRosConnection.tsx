@@ -95,14 +95,26 @@ const RTABMapRosConnection: React.FC<RTABMapRosConnectionProps> = ({
     }
   };
 
-  // Parse robot pose message
+  // Parse robot pose message (from odometry)
   const parseRobotPose = (message: any) => {
     try {
+      // Odometry message has pose.pose structure
       const { pose } = message;
-      return {
-        position: pose.position,
-        orientation: pose.orientation
-      };
+      if (pose && pose.pose) {
+        return {
+          position: pose.pose.position,
+          orientation: pose.pose.orientation
+        };
+      } else if (pose && pose.position) {
+        // Direct pose message
+        return {
+          position: pose.position,
+          orientation: pose.orientation
+        };
+      } else {
+        console.warn('Unexpected pose message structure:', message);
+        return null;
+      }
     } catch (error) {
       console.error('Error parsing robot pose:', error);
       return null;
@@ -239,13 +251,8 @@ const RTABMapRosConnection: React.FC<RTABMapRosConnectionProps> = ({
         const subscriptions = [
           {
             op: 'subscribe',
-            topic: '/map',
+            topic: '/rtabmap/map',
             type: 'nav_msgs/OccupancyGrid'
-          },
-          {
-            op: 'subscribe',
-            topic: '/robot_pose',
-            type: 'geometry_msgs/PoseStamped'
           },
           {
             op: 'subscribe',
@@ -254,8 +261,23 @@ const RTABMapRosConnection: React.FC<RTABMapRosConnectionProps> = ({
           },
           {
             op: 'subscribe',
+            topic: '/rtabmap/mapData',
+            type: 'rtabmap_msgs/MapData'
+          },
+          {
+            op: 'subscribe',
+            topic: '/rtabmap/mapPath',
+            type: 'nav_msgs/Path'
+          },
+          {
+            op: 'subscribe',
             topic: '/rtabmap/info',
-            type: 'rtabmap_ros/Info'
+            type: 'rtabmap_msgs/Info'
+          },
+          {
+            op: 'subscribe',
+            topic: '/zed/zed_node/odom',
+            type: 'nav_msgs/Odometry'
           }
         ];
 
@@ -276,21 +298,23 @@ const RTABMapRosConnection: React.FC<RTABMapRosConnectionProps> = ({
           let shouldUpdate = false;
 
           switch (message.topic) {
-            case '/map':
+            case '/rtabmap/map':
               const occupancyGrid = parseOccupancyGrid(message.msg);
               if (occupancyGrid) {
                 rtabMapData.occupancyGrid = occupancyGrid;
                 shouldUpdate = true;
+                console.log('Received RTAB-Map occupancy grid:', occupancyGrid.width, 'x', occupancyGrid.height);
               }
               break;
 
-            case '/robot_pose':
+            case '/zed/zed_node/odom':
               const robotPose = parseRobotPose(message.msg);
               if (robotPose) {
                 rtabMapData.robotPose = robotPose;
                 updateTrajectory(robotPose);
                 rtabMapData.trajectory = [...trajectoryRef.current];
                 shouldUpdate = true;
+                console.log('Received robot odometry:', robotPose.position);
               }
               break;
 
@@ -299,6 +323,7 @@ const RTABMapRosConnection: React.FC<RTABMapRosConnectionProps> = ({
               if (mapCloud) {
                 rtabMapData.mapCloud = mapCloud;
                 shouldUpdate = true;
+                console.log('Received RTAB-Map point cloud:', mapCloud.points.length / 3, 'points');
               }
               break;
 
@@ -308,7 +333,18 @@ const RTABMapRosConnection: React.FC<RTABMapRosConnectionProps> = ({
                 loopClosuresRef.current = loopClosures;
                 rtabMapData.loopClosures = loopClosures;
                 shouldUpdate = true;
+                console.log('Received RTAB-Map info with', loopClosures.length, 'loop closures');
               }
+              break;
+
+            case '/rtabmap/mapPath':
+              console.log('Received RTAB-Map path data');
+              shouldUpdate = true;
+              break;
+
+            case '/rtabmap/mapData':
+              console.log('Received RTAB-Map database data');
+              shouldUpdate = true;
               break;
           }
 
@@ -384,51 +420,52 @@ const RTABMapRosConnection: React.FC<RTABMapRosConnectionProps> = ({
     };
   }, [isRTABMapActive]);
 
+  // DEMO MODE DISABLED - Only show real RTAB-Map data
   // Generate demo RTAB-Map data when not connected
-  useEffect(() => {
-    let demoInterval: NodeJS.Timeout;
+  // useEffect(() => {
+  //   let demoInterval: NodeJS.Timeout;
 
-    if (!isRTABMapActive) {
-      demoInterval = setInterval(() => {
-        // Generate demo RTAB-Map data
-        const demoData: RTABMapData = {
-          occupancyGrid: {
-            data: Array(100 * 100).fill(0).map(() => Math.random() > 0.8 ? 100 : 0),
-            width: 100,
-            height: 100,
-            resolution: 0.05,
-            origin: {
-              position: { x: -2.5, y: -2.5, z: 0 },
-              orientation: { x: 0, y: 0, z: 0, w: 1 }
-            }
-          },
-          robotPose: {
-            position: { 
-              x: Math.sin(Date.now() * 0.001) * 2, 
-              y: Math.cos(Date.now() * 0.001) * 2, 
-              z: 0 
-            },
-            orientation: { x: 0, y: 0, z: Math.sin(Date.now() * 0.0005), w: Math.cos(Date.now() * 0.0005) }
-          },
-          trajectory: trajectoryRef.current,
-          mapCloud: {
-            points: new Float32Array(300).map(() => (Math.random() - 0.5) * 10),
-            colors: new Float32Array(300).map(() => 0.7 + Math.random() * 0.3)
-          },
-          loopClosures: []
-        };
+  //   if (!isRTABMapActive) {
+  //     demoInterval = setInterval(() => {
+  //       // Generate demo RTAB-Map data
+  //       const demoData: RTABMapData = {
+  //         occupancyGrid: {
+  //           data: Array(100 * 100).fill(0).map(() => Math.random() > 0.8 ? 100 : 0),
+  //           width: 100,
+  //           height: 100,
+  //           resolution: 0.05,
+  //           origin: {
+  //             position: { x: -2.5, y: -2.5, z: 0 },
+  //             orientation: { x: 0, y: 0, z: 0, w: 1 }
+  //           }
+  //         },
+  //         robotPose: {
+  //           position: { 
+  //             x: Math.sin(Date.now() * 0.001) * 2, 
+  //             y: Math.cos(Date.now() * 0.001) * 2, 
+  //             z: 0 
+  //           },
+  //           orientation: { x: 0, y: 0, z: Math.sin(Date.now() * 0.0005), w: Math.cos(Date.now() * 0.0005) }
+  //         },
+  //         trajectory: trajectoryRef.current,
+  //         mapCloud: {
+  //           points: new Float32Array(300).map(() => (Math.random() - 0.5) * 10),
+  //           colors: new Float32Array(300).map(() => 0.7 + Math.random() * 0.3)
+  //         },
+  //         loopClosures: []
+  //       };
 
-        onRTABMapUpdate(demoData);
-        updateStats();
-      }, 200); // Update every 200ms for demo
-    }
+  //       onRTABMapUpdate(demoData);
+  //       updateStats();
+  //     }, 200); // Update every 200ms for demo
+  //   }
 
-    return () => {
-      if (demoInterval) {
-        clearInterval(demoInterval);
-      }
-    };
-  }, [isRTABMapActive]);
+  //   return () => {
+  //     if (demoInterval) {
+  //       clearInterval(demoInterval);
+  //     }
+  //   };
+  // }, [isRTABMapActive]);
 
   return null; // This component doesn't render anything
 };

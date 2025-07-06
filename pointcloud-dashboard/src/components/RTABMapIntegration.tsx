@@ -168,17 +168,25 @@ const RTABMapIntegration: React.FC<RTABMapIntegrationProps> = ({
 
     const { position, orientation } = rtabMapData.robotPose;
     
-    // Set position
-    robotPoseRef.current.position.set(position.x, position.y, position.z + 0.15);
+    // Check if position and orientation exist
+    if (!position || !orientation) return;
     
-    // Set orientation from quaternion
-    const quaternion = new THREE.Quaternion(
-      orientation.x,
-      orientation.y,
-      orientation.z,
-      orientation.w
-    );
-    robotPoseRef.current.setRotationFromQuaternion(quaternion);
+    // Set position with null checks
+    if (position.x !== undefined && position.y !== undefined && position.z !== undefined) {
+      robotPoseRef.current.position.set(position.x, position.y, position.z + 0.15);
+    }
+    
+    // Set orientation from quaternion with null checks
+    if (orientation.x !== undefined && orientation.y !== undefined && 
+        orientation.z !== undefined && orientation.w !== undefined) {
+      const quaternion = new THREE.Quaternion(
+        orientation.x,
+        orientation.y,
+        orientation.z,
+        orientation.w
+      );
+      robotPoseRef.current.setRotationFromQuaternion(quaternion);
+    }
 
   }, [rtabMapData?.robotPose]);
 
@@ -188,17 +196,32 @@ const RTABMapIntegration: React.FC<RTABMapIntegrationProps> = ({
 
     const { points, colors } = rtabMapData.mapCloud;
     
+    if (points.length === 0) return;
+    
+    console.log('Updating RTAB-Map point cloud with', points.length / 3, 'points');
+    
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(points, 3));
     
-    if (colors) {
+    if (colors && colors.length > 0) {
       geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    } else {
+      // Create default colors if none provided
+      const defaultColors = new Float32Array(points.length);
+      for (let i = 0; i < points.length; i += 3) {
+        defaultColors[i] = 0.8;     // R - light blue
+        defaultColors[i + 1] = 0.9; // G
+        defaultColors[i + 2] = 1.0; // B
+      }
+      geometry.setAttribute('color', new THREE.BufferAttribute(defaultColors, 3));
     }
 
-    if (mapCloudRef.current) {
+    // Dispose old geometry
+    if (mapCloudRef.current.geometry) {
       mapCloudRef.current.geometry.dispose();
-      mapCloudRef.current.geometry = geometry;
     }
+    
+    mapCloudRef.current.geometry = geometry;
 
   }, [rtabMapData?.mapCloud]);
 
