@@ -130,35 +130,86 @@ const PointCloudVisualization: React.FC = () => {
           setConnectionStatus('Disconnected from ROS');
         });
 
-        // Subscribe to RTAB-Map cloud_map topic
-        const cloudMapTopic = new ROSLIB.Topic({
+        // Auto-detect point cloud topic
+        const topicsClient = new ROSLIB.Service({
           ros: ros,
-          name: '/cloud_map',
-          messageType: 'sensor_msgs/PointCloud2'
+          name: '/rosapi/topics',
+          serviceType: 'rosapi/Topics'
         });
 
-        cloudMapTopic.subscribe((message: any) => {
-          try {
-            console.log('Received cloud_map data:', message);
-            
-            // Parse PointCloud2 message
-            const result = parsePointCloud2(message);
-            if (result && result.points.length > 0) {
-              const pointCloudData: PointCloudData = {
-                points: result.points,
-                colors: result.colors,
-                timestamp: Date.now()
-              };
-              
-              setPointCloudData(pointCloudData);
-              setPointCount(result.points.length / 3);
-              setConnectionStatus(`Connected - ${(result.points.length / 3).toLocaleString()} points`);
+        const request = new ROSLIB.ServiceRequest({});
+        
+        topicsClient.callService(request, (result: any) => {
+          const topics = result.topics || [];
+          console.log('Available topics for point cloud:', topics);
+          
+          // Look for point cloud topics in order of preference
+          const possibleTopics = [
+            '/cloud_map',
+            '/rtabmap/cloud_map',
+            '/zed/zed_node/point_cloud/cloud_registered',
+            '/zed2i/zed_node/point_cloud/cloud_registered',
+            '/zed2/zed_node/point_cloud/cloud_registered'
+          ];
+          
+          let selectedTopic = null;
+          for (const topic of possibleTopics) {
+            if (topics.includes(topic)) {
+              selectedTopic = topic;
+              break;
             }
-          } catch (error) {
-            console.error('Error processing point cloud data:', error);
-            setConnectionStatus('Error processing point cloud data');
           }
+          
+          // If no exact match, look for any point cloud topic
+          if (!selectedTopic) {
+            selectedTopic = topics.find((topic: string) => 
+              topic.includes('cloud') || topic.includes('point_cloud')
+            );
+          }
+          
+          if (selectedTopic) {
+            console.log('Found point cloud topic:', selectedTopic);
+            subscribeToPointCloud(selectedTopic);
+          } else {
+            console.warn('No point cloud topic found, using default /cloud_map');
+            subscribeToPointCloud('/cloud_map');
+          }
+        }, (error: any) => {
+          // Fallback to default topic
+          subscribeToPointCloud('/cloud_map');
+          console.error('Failed to get topics list:', error);
         });
+
+        const subscribeToPointCloud = (topicName: string) => {
+          const cloudMapTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: topicName,
+            messageType: 'sensor_msgs/PointCloud2'
+          });
+
+          cloudMapTopic.subscribe((message: any) => {
+            try {
+              console.log('Received cloud_map data:', message);
+              
+              // Parse PointCloud2 message
+              const result = parsePointCloud2(message);
+              if (result && result.points.length > 0) {
+                const pointCloudData: PointCloudData = {
+                  points: result.points,
+                  colors: result.colors,
+                  timestamp: Date.now()
+                };
+                
+                setPointCloudData(pointCloudData);
+                setPointCount(result.points.length / 3);
+                setConnectionStatus(`Connected - ${(result.points.length / 3).toLocaleString()} points`);
+              }
+            } catch (error) {
+              console.error('Error processing point cloud data:', error);
+              setConnectionStatus('Error processing point cloud data');
+            }
+          });
+        };
 
         console.log('ROS initialization complete');
       } catch (error) {

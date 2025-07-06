@@ -1,0 +1,734 @@
+/* Robot Control Dashboard Styles */
+.robot-control-dashboard {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Camera Feed Container - Full Background */
+.camera-feed-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.camera-feed-viewer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.camera-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-feed-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: white;
+}
+
+.no-feed-message {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  border: 2px solid #333;
+}
+
+.no-feed-message h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  color: #00bcd4;
+}
+
+.no-feed-message p {
+  margin: 0 0 1rem 0;
+  color: #ccc;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #333;
+  border-top: 4px solid #00bcd4;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.feed-info-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.feed-status {
+  color: #ff4444;
+  font-weight: bold;
+}
+
+.feed-topic {
+  color: #ccc;
+  font-family: monospace;
+}
+
+/* Status Overlay - Top Left */
+.status-overlay {
+  position: absolute;
+  top: 80px; /* Move down to avoid navigation bar */
+  left: 20px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  width: 280px; /* Fixed width instead of min-width */
+  border: 1px solid #444;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.robot-status-overlay .status-header h3 {
+  margin: 0 0 15px 0;
+  color: #00bcd4;
+  font-size: 1.2rem;
+}
+
+.status-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid #333;
+}
+
+.status-item:last-child {
+  border-bottom: none;
+}
+
+.status-label {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.status-value {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+.status-value.connected {
+  color: #4caf50;
+}
+
+.status-value.disconnected {
+  color: #f44336;
+}
+
+.status-value.active {
+  color: #4caf50;
+}
+
+.status-value.inactive {
+  color: #ff9800;
+}
+
+.status-dot {
+  font-size: 0.8rem;
+}
+
+.topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.topic-item {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  padding: 3px 0;
+}
+
+.topic-name {
+  color: #00bcd4;
+  font-family: monospace;
+}
+
+.topic-type {
+  color: #999;
+  font-size: 0.7rem;
+}
+
+.status-footer {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #333;
+}
+
+.timestamp {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+/* Joystick Controller - Right Side */
+.joystick-overlay {
+  position: absolute;
+  top: 80px; /* Move down to avoid navigation bar */
+  right: 20px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 8px;
+  padding: 15px;
+  color: white;
+  width: 320px; /* Reduced width */
+  border: 1px solid #444;
+  backdrop-filter: blur(10px);
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.joystick-controller .joystick-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.joystick-controller .joystick-header h3 {
+  margin: 0;
+  color: #00bcd4;
+  font-size: 1.2rem;
+  flex: 1;
+}
+
+.connection-status {
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  width: 80px;
+}
+
+.status-indicator.connected {
+  color: #4caf50;
+}
+
+.status-indicator.disconnected {
+  color: #f44336;
+}
+
+.control-settings {
+  margin-bottom: 20px;
+}
+
+.setting-group {
+  margin-bottom: 15px;
+}
+
+.setting-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.setting-group input[type="range"] {
+  width: 100%;
+  height: 5px;
+  border-radius: 5px;
+  background: #333;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.setting-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #00bcd4;
+  cursor: pointer;
+}
+
+.setting-group input[type="range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #00bcd4;
+  cursor: pointer;
+  border: none;
+}
+
+.joystick-section {
+  margin-bottom: 25px;
+}
+
+.joystick-section h4 {
+  margin: 0 0 10px 0;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.joystick-container {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 10px auto;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.joystick-base {
+  width: 100%;
+  height: 100%;
+  border: 3px solid #333;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2a2a2a 0%, #1a1a1a 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joystick-directions {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.direction-label {
+  position: absolute;
+  font-size: 0.7rem;
+  color: #666;
+  font-weight: bold;
+}
+
+.direction-label.top {
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.direction-label.bottom {
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.direction-label.left {
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.direction-label.right {
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.joystick-knob {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #333;
+  position: absolute;
+  top: calc(50% - 15px); /* Exact center positioning */
+  left: calc(50% - 15px); /* Exact center positioning */
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.joystick-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #ccc;
+  font-family: monospace;
+}
+
+.control-buttons {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stop-btn {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  flex: 1;
+  min-height: 40px;
+}
+
+.stop-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f57c00 0%, #e65100 100%);
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+}
+
+.stop-btn:disabled {
+  background: #666;
+  border-color: #999;
+  cursor: not-allowed;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.emergency-stop-btn {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  flex: 1;
+  min-height: 40px;
+}
+
+.emergency-stop-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+}
+
+.emergency-stop-btn:disabled {
+  background: #666;
+  border-color: #999;
+  cursor: not-allowed;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.velocity-display {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #333;
+}
+
+.velocity-display h4 {
+  margin: 0 0 10px 0;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.velocity-values {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-family: monospace;
+  color: #ccc;
+}
+
+/* Occupancy Map - Left Side, Higher Position */
+.map-overlay {
+  position: absolute;
+  bottom: 140px; /* Move up from bottom to be more visible */
+  left: 20px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 8px;
+  color: white;
+  border: 1px solid #444;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.map-overlay.compact {
+  width: 320px;
+  height: 240px;
+  padding: 15px;
+}
+
+.map-overlay.expanded {
+  width: 600px;
+  height: 500px;
+  padding: 20px;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+.occupancy-map-viewer .map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.occupancy-map-viewer .map-header h3 {
+  margin: 0;
+  color: #00bcd4;
+  font-size: 1.1rem;
+}
+
+.map-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.expand-btn {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.expand-btn:hover {
+  background: #555;
+}
+
+.map-canvas-container {
+  width: 100%;
+  height: calc(100% - 80px);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+
+.map-info {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.map-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.8rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.stat-label {
+  color: #ccc;
+  font-size: 0.7rem;
+  margin-bottom: 2px;
+}
+
+.stat-value {
+  font-weight: bold;
+  color: white;
+}
+
+.stat-value.occupied {
+  color: #f44336;
+}
+
+.stat-value.free {
+  color: #4caf50;
+}
+
+.stat-value.unknown {
+  color: #ff9800;
+}
+
+.map-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.map-legend h4 {
+  margin: 0 0 5px 0;
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+.legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.legend-color.occupied {
+  background: #000;
+  border: 1px solid #333;
+}
+
+.legend-color.free {
+  background: #f0f0f0;
+  border: 1px solid #333;
+}
+
+.legend-color.unknown {
+  background: #888;
+  border: 1px solid #333;
+}
+
+.no-map-overlay {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 50px); /* Account for header */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  border: 1px solid #333;
+}
+
+.no-map-message {
+  text-align: center;
+  padding: 20px;
+}
+
+.no-map-message h4 {
+  margin: 0 0 10px 0;
+  color: #00bcd4;
+  font-size: 1rem;
+}
+
+.no-map-message p {
+  margin: 0 0 15px 0;
+  color: #ccc;
+  font-size: 0.8rem;
+}
+
+/* Map component connection status */
+.occupancy-map-viewer .connection-status {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  font-size: 0.7rem;
+}
+
+.occupancy-map-viewer .connection-status .status-indicator {
+  width: auto;
+}
+
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .joystick-overlay {
+    width: 300px;
+  }
+  
+  .status-overlay {
+    width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .joystick-overlay {
+    width: 280px;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .status-overlay {
+    width: 200px;
+    top: 10px;
+    left: 10px;
+  }
+  
+  .map-overlay.compact {
+    width: 250px;
+    height: 200px;
+    bottom: 10px;
+    left: 10px;
+  }
+  
+  .control-buttons {
+    gap: 8px;
+  }
+  
+  .stop-btn,
+  .emergency-stop-btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+    min-height: 45px;
+  }
+}
