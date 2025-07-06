@@ -1,18 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
+import MappingControls from './MappingControls';
 
 interface DashboardProps {
   isConnected: boolean;
   connectionStatus: string;
   pointCount: number;
   timestamp?: number;
+  enableMapping: boolean;
+  onToggleMapping: (enabled: boolean) => void;
+  onClearMap: () => void;
+  onSaveMap: () => void;
+  onLoadMap: () => void;
+  mapPointCount: number;
+  maxMapPoints: number;
+  voxelSize: number;
+  onVoxelSizeChange: (size: number) => void;
+  isProcessing: boolean;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ 
   isConnected, 
   connectionStatus, 
   pointCount, 
-  timestamp 
+  timestamp,
+  enableMapping,
+  onToggleMapping,
+  onClearMap,
+  onSaveMap,
+  onLoadMap,
+  mapPointCount,
+  maxMapPoints,
+  voxelSize,
+  onVoxelSizeChange,
+  isProcessing
 }) => {
+  const [showMapping, setShowMapping] = useState(true);
+
   const formatTimestamp = (ts?: number) => {
     if (!ts) return 'N/A';
     return new Date(ts).toLocaleTimeString();
@@ -65,6 +88,33 @@ const Dashboard: React.FC<DashboardProps> = ({
         </div>
       </div>
 
+      {/* 3D Mapping Controls */}
+      <div className="mapping-section">
+        <div className="section-header">
+          <button 
+            className="section-toggle"
+            onClick={() => setShowMapping(!showMapping)}
+          >
+            {showMapping ? '▼' : '▶'} 3D Mapping & CUDA Acceleration
+          </button>
+        </div>
+        
+        {showMapping && (
+          <MappingControls
+            enableMapping={enableMapping}
+            onToggleMapping={onToggleMapping}
+            onClearMap={onClearMap}
+            onSaveMap={onSaveMap}
+            onLoadMap={onLoadMap}
+            mapPointCount={mapPointCount}
+            maxMapPoints={maxMapPoints}
+            voxelSize={voxelSize}
+            onVoxelSizeChange={onVoxelSizeChange}
+            isProcessing={isProcessing}
+          />
+        )}
+      </div>
+
       <div style={{ marginTop: '20px', fontSize: '12px', color: '#888' }}>
         <p>Controls:</p>
         <ul style={{ margin: 0, paddingLeft: '20px' }}>
@@ -73,6 +123,42 @@ const Dashboard: React.FC<DashboardProps> = ({
           <li>Scroll: Zoom</li>
         </ul>
       </div>
+
+      <style>{`
+        .mapping-section {
+          margin: 16px 0;
+          border: 1px solid #444;
+          border-radius: 8px;
+          background: rgba(20, 20, 20, 0.8);
+        }
+
+        .section-header {
+          padding: 0;
+        }
+
+        .section-toggle {
+          width: 100%;
+          background: linear-gradient(135deg, #2196F3, #1976D2);
+          color: white;
+          border: none;
+          padding: 12px 16px;
+          border-radius: 8px 8px 0 0;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: bold;
+          text-align: left;
+          transition: all 0.3s ease;
+        }
+
+        .section-toggle:hover {
+          background: linear-gradient(135deg, #1976D2, #1565C0);
+          transform: translateY(-1px);
+        }
+
+        .section-toggle:active {
+          transform: translateY(0);
+        }
+      `}</style>
     </div>
   );
 };
