@@ -88,15 +88,16 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         'Icp/OutlierRatio': '0.7',
         'Icp/CorrespondenceRatio': '0.01',
         
-        # Cloud parameters for stable high-density mapping
-        'cloud_decimation': '1',  # Keep all points (no decimation)
-        'cloud_max_depth': '12.0',  # Stable maximum depth
-        'cloud_min_depth': '0.3',   # Standard minimum depth
-        'cloud_voxel_size': '0.01',  # 1cm voxel size for good detail
+        # Cloud parameters optimized for performance and stability
+        'cloud_decimation': '2',  # Light decimation to reduce data size
+        'cloud_max_depth': '8.0',  # Reduced range for better performance
+        'cloud_min_depth': '0.5',   # Increased minimum depth
+        'cloud_voxel_size': '0.02',  # 2cm voxel size for balanced performance
         'cloud_noise_filtering_radius': '0.05',  # Standard noise filtering
         'cloud_noise_filtering_min_neighbors': '5',  # Standard neighbors
         'cloud_floor_culling_height': '0.0',
         'cloud_ceiling_culling_height': '3.0',  # Standard ceiling height
+        'cloud_output_voxelized': True,  # Enable output voxelization for smaller data
         
         # Visual features for stable loop closure (RGB-D only, no laser)
         'Vis/MaxFeatures': '1000',
