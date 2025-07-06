@@ -36,29 +36,27 @@ const MapGridRenderer: React.FC<{ mapData: OccupancyMapData | null; isExpanded: 
     const { width, height, data, resolution } = mapData;
     const mesh = meshRef.current;
     
-    // Create instances for occupied cells
-    const occupiedCells: { x: number; y: number; value: number }[] = [];
+    // Create instances for ALL cells to show complete map
+    const allCells: { x: number; y: number; value: number }[] = [];
     
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
         const index = y * width + x;
         const value = data[index];
         
-        // Only render occupied cells (value > 50) and unknown cells (value = -1)
-        if (value > 50 || value === -1) {
-          occupiedCells.push({ x, y, value });
-        }
+        // Render all cells to show complete map
+        allCells.push({ x, y, value });
       }
     }
 
     // Update instance count
-    mesh.count = occupiedCells.length;
+    mesh.count = allCells.length;
     
     // Set up instance matrices and colors
     const matrix = new THREE.Matrix4();
     const color = new THREE.Color();
     
-    occupiedCells.forEach((cell, i) => {
+    allCells.forEach((cell, i) => {
       // Position in world coordinates
       const worldX = (cell.x - width / 2) * resolution;
       const worldY = (cell.y - height / 2) * resolution;
@@ -73,8 +71,10 @@ const MapGridRenderer: React.FC<{ mapData: OccupancyMapData | null; isExpanded: 
         color.setHex(0x888888); // Gray for unknown
       } else if (cell.value > 80) {
         color.setHex(0x000000); // Black for highly occupied
-      } else {
+      } else if (cell.value > 50) {
         color.setHex(0x444444); // Dark gray for occupied
+      } else {
+        color.setHex(0xffffff); // White for free space
       }
       
       mesh.setColorAt(i, color);
@@ -88,10 +88,11 @@ const MapGridRenderer: React.FC<{ mapData: OccupancyMapData | null; isExpanded: 
   }, [mapData]);
 
   useFrame(() => {
-    if (meshRef.current && !isExpanded) {
-      // Subtle rotation when not expanded
-      meshRef.current.rotation.z += 0.001;
-    }
+    // Removed automatic rotation to keep map static
+    // if (meshRef.current && !isExpanded) {
+    //   // Subtle rotation when not expanded
+    //   meshRef.current.rotation.z += 0.001;
+    // }
   });
 
   if (!mapData) return null;
@@ -101,7 +102,7 @@ const MapGridRenderer: React.FC<{ mapData: OccupancyMapData | null; isExpanded: 
   return (
     <instancedMesh
       ref={meshRef}
-      args={[undefined, undefined, 10000]} // Max instances
+      args={[undefined, undefined, 100000]} // Increased max instances for complete map
     >
       <boxGeometry args={[cellSize, cellSize, cellSize * 0.1]} />
       <meshLambertMaterial />
@@ -201,8 +202,31 @@ const OccupancyMapViewer: React.FC<OccupancyMapViewerProps> = ({
           <div className="map-canvas-container">
             <Canvas
               camera={{ 
-                position: (isExpanded ? [0, 0, 10] : [0, 0, 5]) as [number, number, number],
-                fov: 60 
+                position: (() => {
+                  // Calculate optimal camera distance to fit complete map in view
+                  const mapWidth = mapData.width * mapData.resolution;
+                  const mapHeight = mapData.height * mapData.resolution;
+                  const maxDimension = Math.max(mapWidth, mapHeight);
+                  
+                  // Optimize camera distance for complete map visibility
+                  // Account for canvas aspect ratio and ensure full map fits
+                  const canvasAspect = isExpanded ? (600/500) : (290/130);
+                  const mapAspect = mapWidth / mapHeight;
+                  
+                  let scaleFactor;
+                  if (mapAspect > canvasAspect) {
+                    // Map is wider than canvas - fit to width
+                    scaleFactor = isExpanded ? 1.4 : 1.8;
+                  } else {
+                    // Map is taller than canvas - fit to height
+                    scaleFactor = isExpanded ? 1.2 : 1.6;
+                  }
+                  
+                  const cameraZ = Math.max(maxDimension * scaleFactor, isExpanded ? 6 : 3);
+                  
+                  return [0, 0, cameraZ] as [number, number, number];
+                })(),
+                fov: isExpanded ? 60 : 50 // Adjust FOV based on view mode
               }}
               style={{ background: '#f0f0f0' }}
             >

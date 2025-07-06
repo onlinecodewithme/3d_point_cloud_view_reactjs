@@ -502,9 +502,12 @@
 }
 
 .map-overlay.compact {
-  width: 320px;
-  height: 240px;
+  width: 320px !important;
+  height: 240px !important;
   padding: 15px;
+  max-width: 320px;
+  max-height: 240px;
+  overflow: hidden;
 }
 
 .map-overlay.expanded {
@@ -516,11 +519,28 @@
   transform: translate(-50%, 50%);
 }
 
+.occupancy-map-viewer {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.occupancy-map-viewer.compact {
+  width: 290px !important;
+  height: 210px !important;
+  max-width: 290px;
+  max-height: 210px;
+}
+
 .occupancy-map-viewer .map-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
+  flex-shrink: 0;
 }
 
 .occupancy-map-viewer .map-header h3 {
@@ -550,11 +570,73 @@
 }
 
 .map-canvas-container {
-  width: 100%;
-  height: calc(100% - 80px);
+  width: 100% !important;
+  height: calc(100% - 80px) !important;
+  max-width: 100%;
+  max-height: calc(100% - 80px);
   border-radius: 5px;
   overflow: hidden;
   border: 1px solid #333;
+  position: relative;
+}
+
+.map-canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Additional constraints for compact mode */
+.map-overlay.compact .map-canvas-container {
+  width: 290px !important;
+  height: 130px !important;
+  max-width: 290px;
+  max-height: 130px;
+}
+
+.map-overlay.compact .map-canvas-container canvas {
+  width: 290px !important;
+  height: 130px !important;
+  max-width: 290px;
+  max-height: 130px;
+}
+
+.map-overlay.compact .map-info {
+  margin-top: 8px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  padding: 5px 0;
+}
+
+.map-overlay.compact .map-stats {
+  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-overlay.compact .stat-item {
+  min-width: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.map-overlay.compact .stat-label {
+  font-size: 0.6rem;
+  margin-bottom: 2px;
+}
+
+.map-overlay.compact .stat-value {
+  font-size: 0.7rem;
+  font-weight: bold;
 }
 
 .map-info {
@@ -570,6 +652,8 @@
   flex-wrap: wrap;
   gap: 10px;
   font-size: 0.8rem;
+  margin-top: -4px;
+  margin-left: 10px;
 }
 
 .stat-item {
