@@ -67,7 +67,38 @@ install_ros_deps() {
     sudo apt update
     sudo apt install -y ros-$ROS_DISTRO-rosbridge-suite
     
+    print_status "Installing RTAB-Map dependencies..."
+    sudo apt install -y ros-$ROS_DISTRO-rtabmap-ros
+    
+    print_status "Installing ZED SDK dependencies..."
+    sudo apt install -y ros-$ROS_DISTRO-zed-wrapper || print_warning "ZED wrapper not available in apt, please install manually"
+    
+    print_status "Installing web video server for camera streaming..."
+    sudo apt install -y ros-$ROS_DISTRO-web-video-server || print_warning "Web video server not available in apt"
+    
     print_status "ROS2 dependencies installed ✓"
+}
+
+# Build ROS2 workspace
+build_workspace() {
+    print_header "🔨 Building ROS2 Workspace..."
+    
+    print_status "Building workspace..."
+    source /opt/ros/$ROS_DISTRO/setup.bash
+    
+    # Build the workspace
+    colcon build --packages-select zed_rtabmap_demo
+    
+    if [ $? -eq 0 ]; then
+        print_status "Workspace built successfully ✓"
+    else
+        print_error "Failed to build workspace"
+        exit 1
+    fi
+    
+    # Source the workspace
+    source install/setup.bash
+    print_status "Workspace sourced ✓"
 }
 
 # Setup dashboard
@@ -147,14 +178,101 @@ start_services() {
         exit 1
     fi
     
-    # Check for ZED camera
-    print_status "Checking for ZED camera..."
-    if ros2 topic list | grep -q "zed"; then
-        print_status "ZED camera topics detected ✓"
+    # Build workspace again before launching ZED mapping
+    print_status "Building workspace before launching ZED mapping..."
+    source /opt/ros/$ROS_DISTRO/setup.bash
+    colcon build --packages-select zed_rtabmap_demo
+    
+    if [ $? -eq 0 ]; then
+        print_status "Workspace rebuilt successfully ✓"
     else
-        print_warning "ZED camera not detected. Dashboard will run in demo mode."
-        print_status "To start ZED camera manually:"
-        print_status "  ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2"
+        print_error "Failed to rebuild workspace"
+        print_warning "Continuing with existing build..."
+    fi
+    
+    # Start ZED 3D mapping
+    print_status "Starting ZED 3D mapping with RTAB-Map..."
+    source install/setup.bash
+    
+    ros2 launch zed_rtabmap_demo zed_3d_mapping.launch.py camera_model:=zed2i use_zed_odometry:=true launch_rviz:=false > /tmp/zed_mapping.log 2>&1 &
+    ZED_MAPPING_PID=$!
+    
+    # Wait a moment for ZED mapping to start
+    sleep 5
+    
+    # Check if ZED mapping is running
+    if ps -p $ZED_MAPPING_PID > /dev/null; then
+        print_status "ZED 3D mapping started (PID: $ZED_MAPPING_PID) ✓"
+    else
+        print_error "Failed to start ZED 3D mapping. Check /tmp/zed_mapping.log for details."
+        print_warning "Continuing without ZED mapping..."
+        print_status "You can start it manually with:"
+        print_status "  ros2 launch zed_rtabmap_demo zed_3d_mapping.launch.py camera_model:=zed2i use_zed_odometry:=true launch_rviz:=false"
+    fi
+    
+    # Start web video server for camera streaming
+    print_status "Starting web video server for camera streaming..."
+    ros2 run web_video_server web_video_server > /tmp/web_video_server.log 2>&1 &
+    WEB_VIDEO_PID=$!
+    
+    # Wait a moment for web video server to start
+    sleep 2
+    
+    # Check if web video server is running
+    if ps -p $WEB_VIDEO_PID > /dev/null; then
+        print_status "Web video server started (PID: $WEB_VIDEO_PID) ✓"
+        print_status "Camera streams available at: http://localhost:8080"
+    else
+        print_warning "Failed to start web video server. Check /tmp/web_video_server.log for details."
+        print_status "Camera feed will use direct ROSBridge method"
+    fi
+    
+    # Check for ZED camera topics
+    print_status "Checking for ZED camera topics..."
+    sleep 2
+    
+    # Use a more robust method to check for ZED topics
+    ZED_TOPICS=$(ros2 topic list 2>/dev/null | grep "zed" || true)
+    if [ ! -z "$ZED_TOPICS" ]; then
+        print_status "ZED camera topics detected ✓"
+        echo "$ZED_TOPICS" | while read topic; do
+            print_status "  Found: $topic"
+        done
+        
+        # Check specific topics for data
+        print_status "Checking topic data flow..."
+        
+        # Check camera image topic
+        if echo "$ZED_TOPICS" | grep -q "image_rect_color"; then
+            IMAGE_TOPIC=$(echo "$ZED_TOPICS" | grep "image_rect_color" | head -1)
+            print_status "Testing image topic: $IMAGE_TOPIC"
+            timeout 3 ros2 topic echo "$IMAGE_TOPIC" --once > /dev/null 2>&1 && \
+                print_status "  ✓ Image data flowing" || \
+                print_warning "  ⚠ No image data detected"
+        fi
+        
+        # Check point cloud topic
+        if echo "$ZED_TOPICS" | grep -q "point_cloud"; then
+            PC_TOPIC=$(echo "$ZED_TOPICS" | grep "point_cloud" | head -1)
+            print_status "Testing point cloud topic: $PC_TOPIC"
+            timeout 3 ros2 topic echo "$PC_TOPIC" --once > /dev/null 2>&1 && \
+                print_status "  ✓ Point cloud data flowing" || \
+                print_warning "  ⚠ No point cloud data detected"
+        fi
+        
+        # Check for map topic
+        print_status "Checking for map topic..."
+        if ros2 topic list 2>/dev/null | grep -q "/map"; then
+            print_status "Testing map topic: /map"
+            timeout 3 ros2 topic echo "/map" --once > /dev/null 2>&1 && \
+                print_status "  ✓ Map data flowing" || \
+                print_warning "  ⚠ No map data detected"
+        else
+            print_warning "  ⚠ /map topic not found"
+        fi
+        
+    else
+        print_warning "ZED camera topics not detected. Dashboard will run in demo mode."
     fi
     
     print_status "Starting dashboard..."
@@ -184,9 +302,22 @@ cleanup() {
         kill $ROSBRIDGE_PID 2>/dev/null || true
     fi
     
+    if [ ! -z "$ZED_MAPPING_PID" ]; then
+        print_status "Stopping ZED 3D mapping (PID: $ZED_MAPPING_PID)..."
+        kill $ZED_MAPPING_PID 2>/dev/null || true
+    fi
+    
+    if [ ! -z "$WEB_VIDEO_PID" ]; then
+        print_status "Stopping web video server (PID: $WEB_VIDEO_PID)..."
+        kill $WEB_VIDEO_PID 2>/dev/null || true
+    fi
+    
     # Kill any remaining processes
     pkill -f zenohd 2>/dev/null || true
     pkill -f rosbridge 2>/dev/null || true
+    pkill -f "zed_3d_mapping" 2>/dev/null || true
+    pkill -f "rtabmap" 2>/dev/null || true
+    pkill -f "web_video_server" 2>/dev/null || true
     
     print_status "Cleanup complete. Goodbye! 👋"
     exit 0
@@ -247,6 +378,7 @@ main() {
         install_ros_deps
     fi
     
+    build_workspace
     setup_dashboard
     check_cuda
     start_services
