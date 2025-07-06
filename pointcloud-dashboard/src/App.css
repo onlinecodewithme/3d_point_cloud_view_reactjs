@@ -1,0 +1,138 @@
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  position: relative;
+  background-color: #1a1a1a;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.dashboard-panel {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 300px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 20px;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.visualization-container {
+  width: 100%;
+  height: 100%;
+}
+
+.dashboard-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid #00ff00;
+}
+
+.dashboard-item.disconnected {
+  border-left-color: #ff0000;
+}
+
+.dashboard-item h3 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #ccc;
+  text-transform: uppercase;
+}
+
+.dashboard-item .value {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-indicator.connected {
+  background-color: #00ff00;
+  box-shadow: 0 0 10px #00ff00;
+}
+
+.status-indicator.disconnected {
+  background-color: #ff0000;
+  box-shadow: 0 0 10px #ff0000;
+}
+
+.connection-controls {
+  margin-top: 20px;
+}
+
+.connection-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+}
+
+.connection-input::placeholder {
+  color: #888;
+}
+
+.connect-button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.connect-button:hover {
+  background: #0056b3;
+}
+
+.connect-button:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+.point-cloud-info {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(0, 123, 255, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid #007bff;
+}
+
+.point-cloud-info h3 {
+  margin: 0 0 10px 0;
+  color: #007bff;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.info-label {
+  color: #ccc;
+}
+
+.info-value {
+  color: white;
+  font-weight: bold;
+}
