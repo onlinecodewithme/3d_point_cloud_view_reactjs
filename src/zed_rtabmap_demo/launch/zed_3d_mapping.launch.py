@@ -125,10 +125,16 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         'Mem/ReduceGraph': 'false',  # Don't reduce graph
         'Kp/NNStrategy': '0',  # Disable nearest neighbor search
         
-        # Keypoint detector
-        'Kp/MaxFeatures': '1000',
-        'Kp/DetectorStrategy': '6',
+        # Keypoint detector with CUDA acceleration
+        'Kp/MaxFeatures': '2000',  # Increased for RTX 4090
+        'Kp/DetectorStrategy': '6',  # SURF
         'SURF/HessianThreshold': '200',
+        'Kp/WorkingMemory': '0',  # Use all available memory
+        'Kp/ParallelNode': 'true',  # Enable parallel processing
+        
+        # CUDA optimizations for RTX 4090
+        'SURF/GpuVersion': 'true',  # Enable GPU SURF if available
+        'Vis/CorGuessWinSize': '40',  # Optimized for high-end GPU
         
         # Optimization
         'Optimizer/Strategy': '1',

@@ -1,0 +1,9 @@
+cd /home/xavier_ai/ros2_ws && source install/setup.bash
+taskset -c 20-23 nice -n -5 ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+
+
+
+cd /home/xavier_ai/ros2_ws/pointcloud-dashboard
+export NODE_OPTIONS="--max-old-space-size=8192"
+npm start
+

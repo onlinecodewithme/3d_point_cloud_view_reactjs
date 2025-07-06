@@ -31,9 +31,9 @@ module.exports = {
     }),
   ],
   devServer: {
-    static: path.join(__dirname, 'dist'),
-    compress: true,
-    port: 3001,
+    port: 3002,
     hot: true,
+    open: true,
+    historyApiFallback: true,
   },
 };
