@@ -8,6 +8,12 @@ A comprehensive real-time 3D point cloud visualization dashboard built with Reac
 ![TypeScript](https://img.shields.io/badge/TypeScript-4.9-blue)
 ![Three.js](https://img.shields.io/badge/Three.js-Latest-black)
 
+## 📸 Live Dashboard Screenshot
+
+![Point Cloud Dashboard Screenshot](screenshots/dashboard-screenshot.png)
+
+*Real-time 3D point cloud visualization showing 94K points from ZED camera with enhanced colors, interactive controls, and live statistics dashboard*
+
 ## 🎯 Overview
 
 This dashboard provides real-time visualization of point cloud data from ZED cameras through ROS2, offering:
