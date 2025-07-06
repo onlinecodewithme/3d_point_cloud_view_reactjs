@@ -10,7 +10,7 @@ A comprehensive real-time 3D point cloud visualization dashboard built with Reac
 
 ## 📸 Live Dashboard Screenshot
 
-![Point Cloud Dashboard Screenshot](screenshots/dashboard-screenshot.png)
+![alt text](screenshots/image.png)
 
 *Real-time 3D point cloud visualization showing 94K points from ZED camera with enhanced colors, interactive controls, and live statistics dashboard*
 
