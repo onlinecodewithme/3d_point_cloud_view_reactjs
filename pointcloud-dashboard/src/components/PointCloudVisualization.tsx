@@ -17,7 +17,7 @@ const PointCloudRenderer: React.FC<{ data: PointCloudData | null }> = ({ data })
   // Create geometry and material with enhanced settings for better colors
   const geometry = useMemo(() => new THREE.BufferGeometry(), []);
   const material = useMemo(() => new THREE.PointsMaterial({ 
-    size: 0.02, // Smaller points for dense mapping
+    size: 0.04, // Maximum density - tiny points for ultra-detailed mapping
     vertexColors: true,
     sizeAttenuation: true,
     transparent: false,

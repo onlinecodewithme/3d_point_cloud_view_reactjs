@@ -39,21 +39,21 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         'approx_sync': False,
         'wait_imu_to_init': True,
         
-        # 3D Grid mapping parameters for dense mapping
+        # 3D Grid mapping parameters for stable high-density mapping
         'Grid/3D': 'true',
-        'Grid/RangeMax': '12.0',
-        'Grid/CellSize': '0.05',
-        'Grid/DepthDecimation': '1',
+        'Grid/RangeMax': '12.0',  # Stable range
+        'Grid/CellSize': '0.03',  # 3cm cell size for good detail
+        'Grid/DepthDecimation': '1',  # Keep all depth points
         'Grid/RayTracing': 'true',
         'Grid/3DMap': 'true',
         'Grid/GroundIsObstacle': 'false',
-        'Grid/MaxObstacleHeight': '3.0',
-        'Grid/MaxGroundHeight': '0.1',
-        'Grid/ClusterRadius': '0.1',
-        'Grid/MinClusterSize': '10',
+        'Grid/MaxObstacleHeight': '3.0',  # Standard height
+        'Grid/MaxGroundHeight': '0.1',  # Standard ground height
+        'Grid/ClusterRadius': '0.1',  # Standard clustering
+        'Grid/MinClusterSize': '10',  # Standard cluster size
         'Grid/FlatObstacleDetected': 'true',
-        'Grid/PreVoxelFiltering': 'true',
-        'Grid/PostFiltering': 'true',
+        'Grid/PreVoxelFiltering': 'true',  # Re-enable for stability
+        'Grid/PostFiltering': 'true',  # Re-enable for stability
         
         # RTAB-Map's parameters for 3D dense mapping
         'Rtabmap/DetectionRate': '1.0',
@@ -73,7 +73,7 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         'Reg/Force3DoF': 'false',
         
         # ICP parameters for point cloud registration
-        'Icp/VoxelSize': '0.05',
+        'Icp/VoxelSize': '0.02',  # Reduced for higher density
         'Icp/MaxCorrespondenceDistance': '0.1',
         'Icp/MaxTranslation': '2.0',
         'Icp/MaxRotation': '1.0',
@@ -83,6 +83,16 @@ def launch_setup(context: LaunchContext, *args, **kwargs):
         'Icp/Strategy': '1',
         'Icp/OutlierRatio': '0.7',
         'Icp/CorrespondenceRatio': '0.01',
+        
+        # Cloud parameters for stable high-density mapping
+        'cloud_decimation': '1',  # Keep all points (no decimation)
+        'cloud_max_depth': '12.0',  # Stable maximum depth
+        'cloud_min_depth': '0.3',   # Standard minimum depth
+        'cloud_voxel_size': '0.01',  # 1cm voxel size for good detail
+        'cloud_noise_filtering_radius': '0.05',  # Standard noise filtering
+        'cloud_noise_filtering_min_neighbors': '5',  # Standard neighbors
+        'cloud_floor_culling_height': '0.0',
+        'cloud_ceiling_culling_height': '3.0',  # Standard ceiling height
         
         # Visual features
         'Vis/MaxFeatures': '1000',
