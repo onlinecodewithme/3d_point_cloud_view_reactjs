@@ -8,6 +8,8 @@ interface RTABMapControlsProps {
   onLoadMap: () => void;
   showOccupancyGrid: boolean;
   onToggleOccupancyGrid: (show: boolean) => void;
+  showPointCloud: boolean;
+  onTogglePointCloud: (show: boolean) => void;
   showTrajectory: boolean;
   onToggleTrajectory: (show: boolean) => void;
   showLoopClosures: boolean;
@@ -35,6 +37,8 @@ const RTABMapControls: React.FC<RTABMapControlsProps> = ({
   onLoadMap,
   showOccupancyGrid,
   onToggleOccupancyGrid,
+  showPointCloud,
+  onTogglePointCloud,
   showTrajectory,
   onToggleTrajectory,
   showLoopClosures,
@@ -102,10 +106,21 @@ const RTABMapControls: React.FC<RTABMapControlsProps> = ({
           <label className="checkbox-label">
             <input
               type="checkbox"
+              checked={showPointCloud}
+              onChange={(e) => onTogglePointCloud(e.target.checked)}
+            />
+            <span>3D Point Cloud</span>
+          </label>
+        </div>
+
+        <div className="control-row">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
               checked={showOccupancyGrid}
               onChange={(e) => onToggleOccupancyGrid(e.target.checked)}
             />
-            <span>Occupancy Grid</span>
+            <span>2D Occupancy Grid</span>
           </label>
         </div>
 

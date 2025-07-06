@@ -16,9 +16,10 @@ const Navigation: React.FC = () => {
           to="/" 
           className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
         >
-          <span className="nav-icon">🗺️</span>
-          <span className="nav-text">Point Cloud</span>
+          <span className="nav-icon">🧭</span>
+          <span className="nav-text">Enhanced Dashboard</span>
         </Link>
+        
         
         <Link 
           to="/control" 
