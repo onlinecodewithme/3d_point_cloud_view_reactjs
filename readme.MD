@@ -71,6 +71,36 @@ This dashboard provides real-time visualization of point cloud data from ZED cam
 
 ## 🔧 Installation
 
+### Option 1: Automated Setup (Recommended)
+
+Use the provided setup script for automatic installation and startup:
+
+```bash
+# Make script executable (if not already)
+chmod +x setup_dashboard.sh
+
+# Full setup and start (recommended for first time)
+./setup_dashboard.sh
+
+# Or skip installation if already done
+./setup_dashboard.sh --skip-install
+
+# Or just start services
+./setup_dashboard.sh --start-only
+
+# Get help
+./setup_dashboard.sh --help
+```
+
+The script will:
+- ✅ Check ROS2 and Node.js installation
+- ✅ Install rosbridge_suite automatically
+- ✅ Setup dashboard dependencies
+- ✅ Test CUDA acceleration (if available)
+- ✅ Start all services and open dashboard
+
+### Option 2: Manual Setup
+
 ### 1. Install ROS2 Dependencies
 
 ```bash
@@ -90,7 +120,7 @@ cd pointcloud-dashboard
 # Install dependencies
 npm install
 
-# Start development server
+# Start development server (runs on port 3002)
 npm start
 ```
 
@@ -110,7 +140,7 @@ ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2
 
 ### Accessing the Dashboard
 1. Open your web browser
-2. Navigate to `http://localhost:3000`
+2. Navigate to `http://localhost:3002`
 3. The dashboard will automatically connect to ROS bridge
 
 ### 3D Interaction Controls
@@ -253,13 +283,24 @@ console.log(`Point ${i} RGB: raw=${rgbValue}, r=${r}, g=${g}, b=${b}`);
 
 ### Development
 ```bash
-npm start  # Starts development server on http://localhost:3000
+npm start  # Starts development server on http://localhost:3002
 ```
 
 ### Production Build
 ```bash
 npm run build  # Creates optimized production build
 npm run serve  # Serves production build locally
+```
+
+### CUDA Acceleration (Optional)
+For enhanced performance with NVIDIA GPUs:
+```bash
+# Test CUDA accelerator (falls back to CPU if CUDA unavailable)
+python3 cuda_accelerator.py
+
+# Install CUDA dependencies if needed
+pip install cupy-cuda12x  # For CUDA 12.x
+pip install numba
 ```
 
 ### Docker Deployment
@@ -270,7 +311,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-EXPOSE 3000
+EXPOSE 3002
 CMD ["npm", "start"]
 ```
 

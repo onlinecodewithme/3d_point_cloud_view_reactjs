@@ -17,6 +17,7 @@ A real-time point cloud visualization dashboard for ROS2, built with React, Thre
 2. **rosbridge_suite** for WebSocket communication
 3. **Node.js** (v14 or newer)
 4. **ZED Camera** with ROS2 wrapper (optional, demo mode available)
+5. **NVIDIA GPU** with CUDA support (optional, for acceleration)
 
 ## Installation
 
@@ -31,6 +32,65 @@ sudo apt install ros-$ROS_DISTRO-rosbridge-suite
 ```bash
 cd pointcloud-dashboard
 npm install
+```
+
+### 3. Optional: CUDA Acceleration Setup
+
+For enhanced performance with NVIDIA GPUs:
+
+```bash
+# Check CUDA availability
+nvidia-smi
+
+# Install Python CUDA dependencies (optional)
+pip install cupy-cuda12x  # For CUDA 12.x
+pip install numba
+
+# Test CUDA accelerator
+python3 cuda_accelerator.py
+```
+
+The CUDA accelerator automatically falls back to CPU processing if CUDA is unavailable.
+
+## Quick Start Guide
+
+### Complete Setup (All-in-One)
+
+```bash
+# 1. Install ROS2 dependencies
+sudo apt install ros-$ROS_DISTRO-rosbridge-suite
+
+# 2. Setup dashboard
+cd pointcloud-dashboard
+npm install
+
+# 3. Start ROS bridge (Terminal 1)
+source /opt/ros/$ROS_DISTRO/setup.bash
+ros2 launch rosbridge_server rosbridge_websocket_launch.xml &
+
+# 4. Start ZED camera (Terminal 2, if available)
+source /opt/ros/$ROS_DISTRO/setup.bash
+source ~/ros2_ws/install/setup.bash
+ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2 &
+
+# 5. Start dashboard (Terminal 3)
+npm start
+
+# Dashboard will be available at: http://localhost:3002
+```
+
+### Verify Setup
+
+```bash
+# Check ROS bridge is running
+ros2 node list | grep rosbridge
+
+# Check point cloud topic (if ZED camera connected)
+ros2 topic list | grep point_cloud
+ros2 topic hz /zed/zed_node/point_cloud/cloud_registered
+
+# Test CUDA acceleration (optional)
+python3 cuda_accelerator.py
 ```
 
 ## Usage
@@ -62,7 +122,7 @@ ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2
 npm start
 ```
 
-The dashboard will open in your browser at `http://localhost:3000`.
+The dashboard will open in your browser at `http://localhost:3002`.
 
 ## Configuration
 
