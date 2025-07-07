@@ -25,6 +25,8 @@ interface DashboardProps {
   onLoadRTABMap: () => void;
   showOccupancyGrid: boolean;
   onToggleOccupancyGrid: (show: boolean) => void;
+  showPointCloud: boolean;
+  onTogglePointCloud: (show: boolean) => void;
   showTrajectory: boolean;
   onToggleTrajectory: (show: boolean) => void;
   showLoopClosures: boolean;
@@ -66,6 +68,8 @@ const Dashboard: React.FC<DashboardProps> = ({
   onLoadRTABMap,
   showOccupancyGrid,
   onToggleOccupancyGrid,
+  showPointCloud,
+  onTogglePointCloud,
   showTrajectory,
   onToggleTrajectory,
   showLoopClosures,
@@ -180,6 +184,8 @@ const Dashboard: React.FC<DashboardProps> = ({
             onLoadMap={onLoadRTABMap}
             showOccupancyGrid={showOccupancyGrid}
             onToggleOccupancyGrid={onToggleOccupancyGrid}
+            showPointCloud={showPointCloud}
+            onTogglePointCloud={onTogglePointCloud}
             showTrajectory={showTrajectory}
             onToggleTrajectory={onToggleTrajectory}
             showLoopClosures={showLoopClosures}

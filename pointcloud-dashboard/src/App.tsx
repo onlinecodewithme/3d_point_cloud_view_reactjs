@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navigation from './components/Navigation';
 import PointCloudVisualization from './components/PointCloudVisualization';
+import EnhancedPointCloudVisualization from './components/EnhancedPointCloudVisualization';
 import RobotControlDashboard from './components/RobotControlDashboard';
 
 function App() {
@@ -11,6 +12,14 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={
+            <>
+              <Navigation />
+              <main style={{ padding: 0, margin: 0, height: '100vh' }}>
+                <EnhancedPointCloudVisualization />
+              </main>
+            </>
+          } />
+          <Route path="/legacy" element={
             <>
               <Navigation />
               <header className="App-header">
