@@ -27,6 +27,15 @@ interface OccupancyMapData {
   timestamp: number;
 }
 
+interface Waypoint {
+  id: string;
+  x: number;
+  y: number;
+  z?: number;
+  name: string;
+  timestamp: number;
+}
+
 // Point Cloud Renderer Component
 const PointCloudRenderer: React.FC<{ data: PointCloudData | null; showPointCloud: boolean }> = ({ data, showPointCloud }) => {
   const pointsRef = useRef<THREE.Points>(null);
