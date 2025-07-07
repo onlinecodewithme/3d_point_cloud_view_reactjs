@@ -37,8 +37,11 @@ const WaypointRenderer: React.FC<{
   const handleClick = useCallback((event: any) => {
     event.stopPropagation();
     
-    // Update mouse position
-    const rect = event.target.getBoundingClientRect();
+    // Get canvas element for proper coordinate calculation
+    const canvas = event.target.closest('canvas');
+    if (!canvas) return;
+    
+    const rect = canvas.getBoundingClientRect();
     mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 

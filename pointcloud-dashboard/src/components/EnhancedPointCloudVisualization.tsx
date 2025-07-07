@@ -7,6 +7,7 @@ import OccupancyMapViewer from './OccupancyMapViewer';
 import NavigationControlPanel from './NavigationControlPanel';
 import MappingWidget from './MappingWidget';
 import RTABMapWidget from './RTABMapWidget';
+import BatteryWidget from './BatteryWidget';
 import WidgetManager from './WidgetManager';
 
 interface PointCloudData {
@@ -24,6 +25,15 @@ interface OccupancyMapData {
     orientation: { x: number; y: number; z: number; w: number };
   };
   data: number[];
+  timestamp: number;
+}
+
+interface Waypoint {
+  id: string;
+  x: number;
+  y: number;
+  z?: number;
+  name: string;
   timestamp: number;
 }
 
@@ -590,7 +600,7 @@ const EnhancedPointCloudVisualization: React.FC = () => {
       maxSize: { width: 500, height: 700 },
       resizable: true,
       collapsible: true,
-      visible: true
+      visible: false
     },
     {
       id: 'navigation-panel',
@@ -611,6 +621,24 @@ const EnhancedPointCloudVisualization: React.FC = () => {
       resizable: true,
       collapsible: true,
       visible: false
+    },
+    {
+      id: 'battery-monitor',
+      title: 'Battery Monitor',
+      icon: '🔋',
+      component: BatteryWidget,
+      props: {
+        ros: rosRef.current,
+        isConnected,
+        compact: false
+      },
+      defaultPosition: { x: 20, y: window.innerHeight - 520 },
+      defaultSize: { width: 400, height: 500 },
+      minSize: { width: 300, height: 400 },
+      maxSize: { width: 500, height: 700 },
+      resizable: true,
+      collapsible: true,
+      visible: true
     }
   ]);
 
@@ -658,6 +686,15 @@ const EnhancedPointCloudVisualization: React.FC = () => {
             ros: rosRef.current,
             isConnected,
             mapData: occupancyMapData
+          }
+        };
+      } else if (widget.id === 'battery-monitor') {
+        return {
+          ...widget,
+          props: {
+            ...widget.props,
+            ros: rosRef.current,
+            isConnected
           }
         };
       }

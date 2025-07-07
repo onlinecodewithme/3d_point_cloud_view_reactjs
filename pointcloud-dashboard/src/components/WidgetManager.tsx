@@ -138,7 +138,7 @@ const WidgetManager: React.FC<WidgetManagerProps> = ({ widgets, onWidgetToggle }
       <style>{`
         .widget-toggle-panel {
           position: fixed;
-          top: 20px;
+          top: 90px;
           right: 20px;
           background: rgba(20, 20, 20, 0.95);
           border: 1px solid #444;

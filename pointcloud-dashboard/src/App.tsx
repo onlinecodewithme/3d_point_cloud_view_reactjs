@@ -5,6 +5,7 @@ import Navigation from './components/Navigation';
 import PointCloudVisualization from './components/PointCloudVisualization';
 import EnhancedPointCloudVisualization from './components/EnhancedPointCloudVisualization';
 import RobotControlDashboard from './components/RobotControlDashboard';
+import BatteryDashboard from './components/BatteryDashboard';
 
 function App() {
   return (
@@ -36,6 +37,14 @@ function App() {
               <Navigation />
               <main className="control-main">
                 <RobotControlDashboard />
+              </main>
+            </>
+          } />
+          <Route path="/battery" element={
+            <>
+              <Navigation />
+              <main className="battery-main">
+                <BatteryDashboard />
               </main>
             </>
           } />
