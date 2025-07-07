@@ -144,6 +144,15 @@
   overflow: hidden;
 }
 
+/* Battery page styles */
+.battery-main {
+  width: 100%;
+  height: calc(100vh - 60px); /* Account for navigation height */
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+}
+
 .App-header {
   background-color: #282c34;
   padding: 20px;

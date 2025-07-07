@@ -28,6 +28,14 @@ const Navigation: React.FC = () => {
           <span className="nav-icon">🎮</span>
           <span className="nav-text">Robot Control</span>
         </Link>
+        
+        <Link 
+          to="/battery" 
+          className={`nav-link ${location.pathname === '/battery' ? 'active' : ''}`}
+        >
+          <span className="nav-icon">🔋</span>
+          <span className="nav-text">Battery Monitor</span>
+        </Link>
       </div>
       
       <div className="nav-status">
