@@ -231,7 +231,9 @@ const BatteryWidget: React.FC<BatteryWidgetProps> = ({
       case 'discharging': return '🔋';
       case 'full': return '✅';
       case 'critical': return '⚠️';
-      default: return '❓';
+      case 'not charging': return '🔌';
+      case 'unknown': return '📊';
+      default: return '📊'; // Changed from ❓ to 📊 (chart/status icon)
     }
   };
 

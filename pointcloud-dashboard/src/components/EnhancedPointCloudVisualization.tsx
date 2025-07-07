@@ -600,7 +600,7 @@ const EnhancedPointCloudVisualization: React.FC = () => {
       maxSize: { width: 500, height: 700 },
       resizable: true,
       collapsible: true,
-      visible: true
+      visible: false
     },
     {
       id: 'navigation-panel',
@@ -632,13 +632,13 @@ const EnhancedPointCloudVisualization: React.FC = () => {
         isConnected,
         compact: false
       },
-      defaultPosition: { x: window.innerWidth - 420, y: window.innerHeight - 520 },
+      defaultPosition: { x: 20, y: window.innerHeight - 520 },
       defaultSize: { width: 400, height: 500 },
       minSize: { width: 300, height: 400 },
       maxSize: { width: 500, height: 700 },
       resizable: true,
       collapsible: true,
-      visible: false
+      visible: true
     }
   ]);
 

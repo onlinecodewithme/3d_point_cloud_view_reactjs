@@ -81,9 +81,9 @@
 
 .battery-visual-widget {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 10px;
+  gap: 2px;
 }
 
 .battery-outline-widget {
@@ -126,6 +126,7 @@
   background: #00ff41;
   border-radius: 0 2px 2px 0;
   box-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+  align-self: center;
 }
 
 .battery-main-stats {

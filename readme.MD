@@ -16,6 +16,8 @@ A comprehensive real-time 3D point cloud visualization dashboard built with Reac
 ![alt text](screenshots/image4.png)
 ![alt text](screenshots/image5.png)
 ![alt text](screenshots/image6.png)
+![alt text](screenshots/image.png)
+![alt text](screenshots/image8.png)
 
 *Real-time 3D point cloud visualization showing 94K points from ZED camera with enhanced colors, interactive controls, and live statistics dashboard*
 
@@ -39,12 +41,32 @@ This dashboard provides real-time visualization of point cloud data from ZED cam
 - **Optimized Performance**: Hardware-accelerated rendering with Three.js
 - **Proper Orientation**: Anti-clockwise rotation around X-axis for correct viewing angle
 
+### Smart Widget System
+- **Draggable Widgets**: Modular, resizable, and collapsible widget panels
+- **Battery Monitor**: Real-time battery status with enhanced visual indicators
+- **RTAB-Map SLAM**: Advanced SLAM controls for navigation mapping
+- **Mapping Controls**: CUDA-accelerated 3D mapping with voxel filtering
+- **Navigation Panel**: Waypoint management and autonomous navigation
+- **Widget Manager**: Toggle panel for easy widget management
+
+### Battery Monitoring System ⚡
+- **Real-time Battery Data**: Live SOC, voltage, current, and temperature monitoring
+- **Visual Battery Indicator**: Realistic battery visualization with proper terminal alignment
+- **Smart Status Icons**: Professional status indicators (📊, ⚡, 🔋, ✅, ⚠️, 🔌)
+- **Health Color Coding**: Dynamic color changes based on battery health
+- **Runtime Estimation**: Intelligent remaining runtime calculations
+- **Cell Voltage Monitoring**: Individual cell voltage tracking and analysis
+- **MOS Status**: Charge/discharge MOSFET status indicators
+- **Compact Mode**: Space-efficient compact view option
+- **Default Positioning**: Automatically positioned in left bottom corner
+
 ### Dashboard Interface
 - **Live Statistics**: Real-time point count, connection status, and timestamps
 - **Connection Management**: Auto-connect with manual disconnect option
 - **Topic Information**: Display of ROS2 topic details and frame rates
 - **Status Indicators**: Visual feedback for connection and data flow
 - **Control Instructions**: Built-in help for user interactions
+- **Widget Toggle Panel**: Easy enable/disable controls for all widgets
 
 ### Technical Features
 - **Base64 Data Decoding**: Proper handling of rosbridge data encoding
@@ -159,12 +181,32 @@ ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2
 - **Mouse Wheel**: Zoom in/out
 - **Auto-rotation**: Disabled by default for user control
 
+### Widget Management
+- **Widget Toggle Panel**: Located in the top-right corner with 🎛️ icon
+- **Enable/Disable Widgets**: Click widget buttons to toggle visibility
+- **Drag & Drop**: Move widgets by dragging their title bars
+- **Resize**: Drag widget corners to resize (when resizable)
+- **Collapse**: Click collapse button to minimize widgets
+- **Reset Positions**: Use "Reset All" button to restore default positions
+
+### Battery Monitor Widget ⚡
+- **Default Location**: Automatically positioned in left bottom corner
+- **Real-time Data**: Live updates of SOC, voltage, current, temperature
+- **Visual Indicators**: 
+  - Battery outline with proper terminal alignment
+  - Color-coded health status (green > 70%, yellow > 30%, red < 30%)
+  - Professional status icons for different states
+- **Runtime Estimation**: Intelligent calculation based on current consumption
+- **Cell Monitoring**: Individual cell voltage tracking (when available)
+- **Compact Mode**: Toggle between full and compact views
+
 ### Dashboard Features
 - **Connection Status**: Green indicator when connected to ROS2
 - **Point Count**: Live display of current point cloud size
 - **Last Update**: Timestamp of most recent data
 - **Topic Info**: Details about the subscribed ROS2 topic
 - **Frame Rate**: Real-time performance metrics
+- **Widget System**: Modular interface with draggable, resizable panels
 
 ## 🎨 3D Visualization Details
 
