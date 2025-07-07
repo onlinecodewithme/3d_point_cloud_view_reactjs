@@ -136,11 +136,30 @@ const OccupancyGridRenderer: React.FC<{
     const matrix = new THREE.Matrix4();
     const color = new THREE.Color();
     
+    // Create quaternion from map origin orientation
+    const quaternion = new THREE.Quaternion(
+      mapData.origin.orientation.x,
+      mapData.origin.orientation.y,
+      mapData.origin.orientation.z,
+      mapData.origin.orientation.w
+    );
+    
     allCells.forEach((cell, i) => {
-      // Position in world coordinates
-      const worldX = (cell.x - width / 2) * resolution;
-      const worldY = (cell.y - height / 2) * resolution;
-      const worldZ = 0.01; // Slightly above ground
+      // Position in local map coordinates (ROS occupancy grid: origin is at bottom-left corner)
+      const localX = cell.x * resolution;
+      const localY = cell.y * resolution;
+      const localZ = 0.01; // Slightly above ground
+      
+      // Create local position vector
+      const localPosition = new THREE.Vector3(localX, localY, localZ);
+      
+      // Apply map orientation to local position
+      localPosition.applyQuaternion(quaternion);
+      
+      // Add map origin position to get world coordinates
+      const worldX = mapData.origin.position.x + localPosition.x;
+      const worldY = mapData.origin.position.y + localPosition.y;
+      const worldZ = mapData.origin.position.z + localPosition.z;
       
       // Set instance matrix
       matrix.setPosition(worldX, worldY, worldZ);
@@ -265,6 +284,7 @@ const EnhancedPointCloudVisualization: React.FC = () => {
           cloudMapTopic.subscribe((message: any) => {
             try {
               console.log('Received cloud_map data:', message);
+              console.log('Point cloud frame_id:', message.header.frame_id);
               
               // Parse PointCloud2 message
               const result = parsePointCloud2(message);
