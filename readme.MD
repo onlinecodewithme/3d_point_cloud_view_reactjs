@@ -246,14 +246,29 @@ ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2
 
 ## 🔌 ROS2 Integration
 
-### Supported Topics
-- **Primary**: `/zed/zed_node/point_cloud/cloud_registered`
-- **Message Type**: `sensor_msgs/PointCloud2`
-- **Data Format**: Base64 encoded binary data via rosbridge
+### Comprehensive ROS Bridge Documentation
+📖 **[Complete ROS Bridge Integration Guide](ROS_BRIDGE_INTEGRATION.md)**
+
+This comprehensive documentation covers:
+- **Point Cloud Topics**: 3D visualization data from ZED camera
+- **Battery System Topics**: Real-time battery monitoring and health
+- **Navigation Topics**: Waypoint navigation and path planning
+- **SLAM/Mapping Topics**: RTAB-Map integration and occupancy grids
+- **Camera Topics**: Live video feeds and image processing
+- **Service Integration**: Map saving, topic discovery, and more
+- **Data Type Reference**: Complete message structures and samples
+- **Troubleshooting Guide**: Common issues and solutions
+
+### Quick Reference - Primary Topics
+- **Point Cloud**: `/zed/zed_node/point_cloud/cloud_registered` (`sensor_msgs/PointCloud2`)
+- **Battery State**: `/battery/state` (`sensor_msgs/BatteryState`)
+- **Navigation Goal**: `/move_base_simple/goal` (`geometry_msgs/PoseStamped`)
+- **Occupancy Map**: `/map` (`nav_msgs/OccupancyGrid`)
+- **Camera Feed**: `/zed/zed_node/rgb/image_rect_color` (`sensor_msgs/Image`)
 
 ### WebSocket Configuration
 - **Default URL**: `ws://localhost:9090`
-- **Protocol**: rosbridge WebSocket protocol
+- **Protocol**: rosbridge WebSocket protocol v2.0
 - **Auto-reconnect**: 3-second intervals
 - **Connection Management**: Graceful handling of disconnections
 
