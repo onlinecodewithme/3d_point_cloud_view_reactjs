@@ -697,6 +697,15 @@ const EnhancedPointCloudVisualization: React.FC = () => {
             isConnected
           }
         };
+      } else if (widget.id === 'system-monitoring') {
+        return {
+          ...widget,
+          props: {
+            ...widget.props,
+            ros: rosRef.current,
+            isConnected
+          }
+        };
       }
       return widget;
     }));

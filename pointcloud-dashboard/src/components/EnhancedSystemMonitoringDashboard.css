@@ -1,0 +1,844 @@
+/* Enhanced System Monitoring Dashboard Styles */
+.enhanced-system-monitoring-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+/* Header Styles */
+.enhanced-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid #333;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.header-title h1 {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(45deg, #2196F3, #00ff41, #FF6B6B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.header-title p {
+  margin: 0;
+  color: #ccc;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.header-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.status-indicator {
+  font-size: 12px;
+  animation: pulse 2s infinite;
+}
+
+.status-indicator.connected {
+  color: #00ff41;
+}
+
+.status-indicator.disconnected {
+  color: #ff4444;
+}
+
+.time-range-selector, .metric-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.time-select, .metric-select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: white;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.time-select:hover, .metric-select:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #777;
+}
+
+.time-select:focus, .metric-select:focus {
+  outline: none;
+  border-color: #2196F3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.3);
+}
+
+/* Brain Status Sections */
+.brain-status-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.brain-section {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.brain-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.cognition-section::before {
+  background: linear-gradient(90deg, #2196F3, #00bcd4);
+}
+
+.perception-section::before {
+  background: linear-gradient(90deg, #FF6B6B, #ff9800);
+}
+
+.brain-section:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.brain-section-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brain-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.brain-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+.brain-title h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.brain-status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-left: auto;
+}
+
+.brain-status-badge.online {
+  background: rgba(0, 255, 65, 0.2);
+  color: #00ff41;
+  border: 1px solid #00ff41;
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+}
+
+.brain-status-badge.offline {
+  background: rgba(255, 68, 68, 0.2);
+  color: #ff4444;
+  border: 1px solid #ff4444;
+  box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+}
+
+.brain-metrics-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.metric-icon {
+  font-size: 24px;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+.metric-info {
+  flex: 1;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #ccc;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.metric-value {
+  font-size: 18px;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* Status Cards Grid */
+.status-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.status-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #444;
+  border-radius: 16px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.status-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2196F3, #00ff41, #FF6B6B);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  border-color: #666;
+}
+
+.status-card:hover::before {
+  opacity: 1;
+}
+
+.card-icon {
+  font-size: 40px;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-title {
+  font-size: 14px;
+  color: #ccc;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.card-value {
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Charts Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.chart-container {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #333;
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(33, 150, 243, 0.05), rgba(255, 107, 107, 0.05));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.chart-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  border-color: #555;
+}
+
+.chart-container:hover::before {
+  opacity: 1;
+}
+
+.chart-container.large {
+  grid-column: span 2;
+  min-height: 350px;
+}
+
+.chart-container.medium {
+  min-height: 300px;
+}
+
+.chart-container.small {
+  min-height: 250px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chart-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.legend-item.cognition {
+  color: #2196F3;
+}
+
+.legend-item.perception {
+  color: #FF6B6B;
+}
+
+/* Custom Tooltip */
+.custom-tooltip {
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.tooltip-label {
+  color: #ccc;
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.custom-tooltip p {
+  margin: 4px 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Brain Details Section */
+.brain-details-section {
+  margin-top: 40px;
+}
+
+.brain-details-section h2 {
+  margin: 0 0 25px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(45deg, #2196F3, #FF6B6B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brain-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 30px;
+}
+
+.brain-detail-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #444;
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(15px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.brain-detail-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2196F3, #00ff41);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.brain-detail-card.online::before {
+  opacity: 1;
+}
+
+.brain-detail-card.offline::before {
+  background: linear-gradient(90deg, #ff4444, #ffaa00);
+  opacity: 1;
+}
+
+.brain-detail-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border-color: #666;
+}
+
+.brain-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brain-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status-badge.online {
+  background: rgba(0, 255, 65, 0.2);
+  color: #00ff41;
+  border: 1px solid #00ff41;
+}
+
+.status-badge.offline {
+  background: rgba(255, 68, 68, 0.2);
+  color: #ff4444;
+  border: 1px solid #ff4444;
+}
+
+.brain-icon-large {
+  font-size: 48px;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+}
+
+/* Brain Metrics Grid */
+.brain-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.metric-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #555;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-box:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #777;
+  transform: translateY(-2px);
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #ccc;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.metric-value {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.metric-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.metric-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* Brain Offline Message */
+.brain-offline-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #ccc;
+}
+
+.offline-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  opacity: 0.7;
+}
+
+.offline-text {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #ff4444;
+}
+
+.offline-time {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .chart-container.large {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 1200px) {
+  .enhanced-dashboard-header {
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+  }
+  
+  .header-controls {
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .brain-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .enhanced-system-monitoring-dashboard {
+    padding: 15px;
+  }
+  
+  .enhanced-dashboard-header {
+    padding: 20px;
+  }
+  
+  .header-title h1 {
+    font-size: 28px;
+  }
+  
+  .status-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .status-card {
+    padding: 20px;
+  }
+  
+  .card-icon {
+    font-size: 32px;
+  }
+  
+  .card-value {
+    font-size: 24px;
+  }
+  
+  .charts-grid {
+    gap: 20px;
+  }
+  
+  .chart-container {
+    padding: 15px;
+  }
+  
+  .brain-detail-card {
+    padding: 20px;
+  }
+  
+  .brain-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title h1 {
+    font-size: 24px;
+  }
+  
+  .header-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .status-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .chart-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .chart-legend {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+/* Loading and Animation States */
+.loading-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Scrollbar Styling */
+.enhanced-system-monitoring-dashboard::-webkit-scrollbar {
+  width: 8px;
+}
+
+.enhanced-system-monitoring-dashboard::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.enhanced-system-monitoring-dashboard::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.enhanced-system-monitoring-dashboard::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Chart Canvas Styling */
+canvas {
+  border-radius: 8px;
+}
+
+/* Enhanced Animations */
+.status-card, .chart-container, .brain-detail-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.status-card:nth-child(1) { animation-delay: 0.1s; }
+.status-card:nth-child(2) { animation-delay: 0.2s; }
+.status-card:nth-child(3) { animation-delay: 0.3s; }
+.status-card:nth-child(4) { animation-delay: 0.4s; }
+
+.chart-container:nth-child(1) { animation-delay: 0.2s; }
+.chart-container:nth-child(2) { animation-delay: 0.3s; }
+.chart-container:nth-child(3) { animation-delay: 0.4s; }
+.chart-container:nth-child(4) { animation-delay: 0.5s; }
+.chart-container:nth-child(5) { animation-delay: 0.6s; }
+.chart-container:nth-child(6) { animation-delay: 0.7s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glow Effects */
+.status-card.system-health .card-value,
+.status-card.brain-status .card-value,
+.status-card.avg-cpu .card-value,
+.status-card.max-temp .card-value {
+  text-shadow: 0 0 20px currentColor;
+}
+
+.metric-value {
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* Interactive Elements */
+.time-select option,
+.metric-select option {
+  background: #1a1a1a;
+  color: white;
+}
+
+/* Focus States */
+.time-select:focus,
+.metric-select:focus {
+  transform: scale(1.02);
+}
+
+/* Hover Effects for Metrics */
+.metric-box:hover .metric-fill {
+  box-shadow: 0 0 15px currentColor;
+}
+
+/* Enhanced Status Indicators */
+.status-indicator.connected {
+  box-shadow: 0 0 10px #00ff41;
+}
+
+.status-indicator.disconnected {
+  box-shadow: 0 0 10px #ff4444;
+}

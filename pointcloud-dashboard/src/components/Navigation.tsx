@@ -36,6 +36,14 @@ const Navigation: React.FC = () => {
           <span className="nav-icon">🔋</span>
           <span className="nav-text">Battery Monitor</span>
         </Link>
+        
+        <Link 
+          to="/system-monitoring" 
+          className={`nav-link ${location.pathname === '/system-monitoring' || location.pathname === '/enhanced-system-monitoring' ? 'active' : ''}`}
+        >
+          <span className="nav-icon">🧠</span>
+          <span className="nav-text">Enhanced Brain Monitor</span>
+        </Link>
       </div>
       
       <div className="nav-status">
