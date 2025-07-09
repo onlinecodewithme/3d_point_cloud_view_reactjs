@@ -1,0 +1,542 @@
+/* System Monitoring Widget Styles */
+.system-monitoring-widget {
+  background: rgba(20, 25, 35, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  min-height: 200px;
+}
+
+.system-monitoring-widget:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Widget Header */
+.system-widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.system-widget-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.system-widget-title h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.system-icon {
+  font-size: 20px;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+.system-connection-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.connection-indicator {
+  font-size: 10px;
+  animation: pulse 2s infinite;
+}
+
+.connection-indicator.connected {
+  color: #00ff41;
+}
+
+.connection-indicator.disconnected {
+  color: #ff4444;
+}
+
+.connection-text {
+  color: #cccccc;
+  font-size: 11px;
+}
+
+/* Widget Content */
+.system-widget-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* System Health Overview */
+.system-health-overview {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.health-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.health-icon {
+  font-size: 24px;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.health-info {
+  flex: 1;
+}
+
+.health-status {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.health-subtitle {
+  font-size: 11px;
+  color: #cccccc;
+}
+
+/* Brain Systems Grid */
+.brain-systems-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.brain-system-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.brain-system-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.brain-system-card.cognition {
+  border-left: 3px solid #2196F3;
+}
+
+.brain-system-card.perception {
+  border-left: 3px solid #FF6B6B;
+}
+
+.brain-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.brain-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.brain-icon {
+  font-size: 16px;
+}
+
+.brain-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.brain-status-badge {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.brain-status-badge.online {
+  background: rgba(0, 255, 65, 0.2);
+  color: #00ff41;
+  border: 1px solid rgba(0, 255, 65, 0.3);
+}
+
+.brain-status-badge.offline {
+  background: rgba(255, 68, 68, 0.2);
+  color: #ff4444;
+  border: 1px solid rgba(255, 68, 68, 0.3);
+}
+
+/* Brain Metrics */
+.brain-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metric-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-label {
+  font-size: 10px;
+  color: #cccccc;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.metric-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.metric-value.small {
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.metric-bar {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.metric-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Brain Offline Message */
+.brain-offline-message {
+  text-align: center;
+  padding: 16px 8px;
+  color: #cccccc;
+}
+
+.offline-icon {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.offline-text {
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.offline-time {
+  font-size: 9px;
+  color: #999999;
+}
+
+/* Quick Stats Summary */
+.system-quick-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.quick-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.quick-stat-icon {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.quick-stat-info {
+  flex: 1;
+}
+
+.quick-stat-label {
+  font-size: 9px;
+  color: #cccccc;
+  text-transform: uppercase;
+  margin-bottom: 1px;
+}
+
+.quick-stat-value {
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Loading States */
+.system-widget-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #cccccc;
+}
+
+.loading-spinner-widget {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top: 2px solid #00ff41;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+.loading-text-widget {
+  font-size: 12px;
+  color: #cccccc;
+}
+
+/* Compact Mode */
+.system-monitoring-widget.compact {
+  padding: 12px;
+  min-height: auto;
+}
+
+.system-monitoring-widget.compact .system-widget-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+}
+
+.system-monitoring-widget.compact .system-widget-header .system-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.connection-dot {
+  font-size: 8px;
+  animation: pulse 2s infinite;
+}
+
+.connection-dot.connected {
+  color: #00ff41;
+}
+
+.connection-dot.disconnected {
+  color: #ff4444;
+}
+
+/* Compact Content */
+.system-compact-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.system-health-indicator {
+  text-align: center;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.health-status {
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.brains-count {
+  font-size: 9px;
+  color: #cccccc;
+}
+
+/* Mini Stats */
+.system-mini-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mini-brain-stat {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mini-brain-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.mini-brain-icon {
+  font-size: 12px;
+}
+
+.mini-brain-name {
+  font-size: 10px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.mini-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.mini-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.mini-label {
+  font-size: 8px;
+  color: #cccccc;
+  text-transform: uppercase;
+}
+
+.mini-value {
+  font-size: 9px;
+  font-weight: 600;
+}
+
+/* Compact Loading */
+.system-loading-compact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.loading-dots {
+  font-size: 12px;
+  color: #00ff41;
+  animation: pulse 1.5s infinite;
+  margin-bottom: 6px;
+}
+
+.loading-text {
+  font-size: 10px;
+  color: #cccccc;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .brain-systems-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .system-quick-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .metric-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .system-monitoring-widget {
+    padding: 12px;
+  }
+  
+  .system-quick-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .mini-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dark Theme Enhancements */
+.system-monitoring-widget {
+  --primary-bg: rgba(20, 25, 35, 0.95);
+  --secondary-bg: rgba(255, 255, 255, 0.05);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-muted: #999999;
+  --success-color: #00ff41;
+  --warning-color: #ffaa00;
+  --error-color: #ff4444;
+  --cognition-color: #2196F3;
+  --perception-color: #FF6B6B;
+}
+
+/* Hover Effects */
+.brain-system-card:hover .brain-icon {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+.quick-stat:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.mini-brain-stat:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+/* Accessibility */
+.system-monitoring-widget:focus-within {
+  outline: 2px solid rgba(33, 150, 243, 0.5);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .system-monitoring-widget {
+    background: white;
+    color: black;
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+  
+  .loading-spinner-widget {
+    display: none;
+  }
+}

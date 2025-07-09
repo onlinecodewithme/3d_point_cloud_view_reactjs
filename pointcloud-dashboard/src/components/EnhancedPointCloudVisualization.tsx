@@ -8,6 +8,7 @@ import NavigationControlPanel from './NavigationControlPanel';
 import MappingWidget from './MappingWidget';
 import RTABMapWidget from './RTABMapWidget';
 import BatteryWidget from './BatteryWidget';
+import SystemMonitoringWidget from './SystemMonitoringWidget';
 import WidgetManager from './WidgetManager';
 
 interface PointCloudData {
@@ -639,6 +640,24 @@ const EnhancedPointCloudVisualization: React.FC = () => {
       resizable: true,
       collapsible: true,
       visible: true
+    },
+    {
+      id: 'system-monitoring',
+      title: 'Brain System Monitor',
+      icon: '🧠',
+      component: SystemMonitoringWidget,
+      props: {
+        ros: rosRef.current,
+        isConnected,
+        compact: false
+      },
+      defaultPosition: { x: window.innerWidth - 420, y: window.innerHeight - 520 },
+      defaultSize: { width: 400, height: 500 },
+      minSize: { width: 350, height: 450 },
+      maxSize: { width: 600, height: 700 },
+      resizable: true,
+      collapsible: true,
+      visible: false
     }
   ]);
 
@@ -689,6 +708,15 @@ const EnhancedPointCloudVisualization: React.FC = () => {
           }
         };
       } else if (widget.id === 'battery-monitor') {
+        return {
+          ...widget,
+          props: {
+            ...widget.props,
+            ros: rosRef.current,
+            isConnected
+          }
+        };
+      } else if (widget.id === 'system-monitoring') {
         return {
           ...widget,
           props: {

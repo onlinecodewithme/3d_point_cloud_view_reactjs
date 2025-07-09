@@ -10,13 +10,14 @@ This document provides comprehensive documentation for integrating each ROS topi
 2. [ROS Bridge Setup](#ros-bridge-setup)
 3. [Point Cloud Topics](#point-cloud-topics)
 4. [Battery System Topics](#battery-system-topics)
-5. [Navigation Topics](#navigation-topics)
-6. [SLAM/Mapping Topics](#slamapping-topics)
-7. [Camera Topics](#camera-topics)
-8. [Service Integration](#service-integration)
-9. [Data Type Reference](#data-type-reference)
-10. [Sample Data Examples](#sample-data-examples)
-11. [Troubleshooting](#troubleshooting)
+5. [System Monitoring Topics](#system-monitoring-topics)
+6. [Navigation Topics](#navigation-topics)
+7. [SLAM/Mapping Topics](#slamapping-topics)
+8. [Camera Topics](#camera-topics)
+9. [Service Integration](#service-integration)
+10. [Data Type Reference](#data-type-reference)
+11. [Sample Data Examples](#sample-data-examples)
+12. [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
 
@@ -269,6 +270,457 @@ const cellTopic = new ROSLIB.Topic({
   "location": "main_battery",
   "serial_number": "BAT001"
 }
+```
+
+## System Monitoring Topics
+
+### Enhanced Brain System Monitoring
+
+The Enhanced Brain System Monitoring Dashboard subscribes to dedicated system monitoring topics for both Cognition and Perception Brain systems. These topics provide comprehensive system health and performance data.
+
+#### Cognition Brain System Monitoring
+
+**Topic**: `/cognitionbrain/system_monitoring`
+**Message Type**: `std_msgs/String`
+**Description**: Comprehensive system monitoring data from the Cognition Brain system in JSON format
+
+##### Data Structure
+```typescript
+interface CognitionBrainSystemData {
+  timestamp: number;
+  header: {
+    frame_id: string;
+    timestamp: number;
+  };
+  cpu: {
+    usage_percent: number;
+    temperature: number;
+    core_count: number;
+    core_usage: number[];
+    frequency_mhz: number;
+  };
+  memory: {
+    total_bytes: number;
+    used_bytes: number;
+    available_bytes: number;
+    usage_percent: number;
+  };
+  gpu: {
+    available: boolean;
+    usage_percent: number;
+    temperature: number;
+    memory_total_bytes: number;
+    memory_used_bytes: number;
+    memory_usage_percent: number;
+  };
+  storage: {
+    total_bytes: number;
+    used_bytes: number;
+    available_bytes: number;
+    usage_percent: number;
+  };
+  network: {
+    bytes_sent: number;
+    bytes_received: number;
+    packets_sent: number;
+    packets_received: number;
+  };
+  system_load: {
+    load_1min: number;
+    load_5min: number;
+    load_15min: number;
+  };
+  processes: {
+    process_count: number;
+    thread_count: number;
+  };
+  uptime_seconds: number;
+  battery: {
+    available: boolean;
+    percent: number;
+    charging: boolean;
+    time_remaining_minutes: number;
+  };
+}
+```
+
+##### WebSocket Subscription
+```javascript
+const cognitionTopic = new ROSLIB.Topic({
+  ros: ros,
+  name: '/cognitionbrain/system_monitoring',
+  messageType: 'std_msgs/String'
+});
+
+cognitionTopic.subscribe((message) => {
+  try {
+    const systemData = JSON.parse(message.data);
+    console.log('Cognition Brain CPU:', systemData.cpu.usage_percent + '%');
+    console.log('Cognition Brain Memory:', systemData.memory.usage_percent + '%');
+    console.log('Cognition Brain Temperature:', systemData.cpu.temperature + '°C');
+    
+    // Process system monitoring data
+    updateCognitionBrainMetrics(systemData);
+  } catch (error) {
+    console.error('Error parsing cognition brain data:', error);
+  }
+});
+```
+
+##### Sample Cognition Brain Data
+```json
+{
+  "data": "{\"timestamp\":1752077026.528329,\"header\":{\"frame_id\":\"system_monitor\",\"timestamp\":1752077026.5283687},\"cpu\":{\"usage_percent\":2.5,\"temperature\":0.0,\"core_count\":8,\"core_usage\":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],\"frequency_mhz\":729.6},\"memory\":{\"total_bytes\":16416145408,\"used_bytes\":4179402752,\"available_bytes\":11845648384,\"usage_percent\":27.8},\"gpu\":{\"available\":true,\"usage_percent\":0.0,\"temperature\":0.0,\"memory_total_bytes\":0,\"memory_used_bytes\":0,\"memory_usage_percent\":0.0},\"storage\":{\"total_bytes\":123887923200,\"used_bytes\":91493199872,\"available_bytes\":26054246400,\"usage_percent\":73.85},\"network\":{\"bytes_sent\":834550655,\"bytes_received\":912503764,\"packets_sent\":1525461,\"packets_received\":1611076},\"system_load\":{\"load_1min\":0.04931640625,\"load_5min\":0.2529296875,\"load_15min\":0.20068359375},\"processes\":{\"process_count\":359,\"thread_count\":753},\"uptime_seconds\":45610,\"battery\":{\"available\":false,\"percent\":0.0,\"charging\":false,\"time_remaining_minutes\":0}}"
+}
+```
+
+#### Perception Brain System Monitoring
+
+**Topic**: `/perceptionbrain/system_monitoring`
+**Message Type**: `std_msgs/String`
+**Description**: Comprehensive system monitoring data from the Perception Brain system in JSON format with extended system information
+
+##### Data Structure
+```typescript
+interface PerceptionBrainSystemData {
+  header: {
+    timestamp: string;
+    frame_id: string;
+    node_name: string;
+  };
+  cpu: {
+    usage_percent: string;
+    temperature: string;
+    core_count: string;
+    core_usage: string; // Comma-separated values
+    frequency_mhz: string;
+  };
+  memory: {
+    total_bytes: string;
+    used_bytes: string;
+    available_bytes: string;
+    usage_percent: string;
+    total_gb: string;
+    used_gb: string;
+    available_gb: string;
+  };
+  gpu: {
+    available: string;
+    usage_percent: string;
+    temperature: string;
+    memory_total_bytes: string;
+    memory_used_bytes: string;
+    memory_usage_percent: string;
+    memory_total_gb: string;
+    memory_used_gb: string;
+  };
+  storage: {
+    total_bytes: string;
+    used_bytes: string;
+    available_bytes: string;
+    usage_percent: string;
+    path: string;
+    total_gb: string;
+    used_gb: string;
+    available_gb: string;
+  };
+  network: {
+    bytes_sent: string;
+    bytes_received: string;
+    packets_sent: string;
+    packets_received: string;
+    bytes_sent_mb: string;
+    bytes_received_mb: string;
+  };
+  system_load: {
+    load_1min: string;
+    load_5min: string;
+    load_15min: string;
+  };
+  processes: {
+    process_count: string;
+    thread_count: string;
+  };
+  uptime: {
+    seconds: string;
+    formatted: string;
+    days: string;
+    hours: string;
+    minutes: string;
+  };
+  battery: {
+    available: string;
+    percent: string;
+    charging: string;
+    time_remaining_minutes: string;
+    time_remaining_hours: string;
+  };
+  system_info: {
+    platform: string;
+    platform_release: string;
+    platform_version: string;
+    architecture: string;
+    hostname: string;
+    processor: string;
+  };
+}
+```
+
+##### WebSocket Subscription
+```javascript
+const perceptionTopic = new ROSLIB.Topic({
+  ros: ros,
+  name: '/perceptionbrain/system_monitoring',
+  messageType: 'std_msgs/String'
+});
+
+perceptionTopic.subscribe((message) => {
+  try {
+    const systemData = JSON.parse(message.data);
+    
+    // Parse string values to numbers
+    const parseValue = (value) => {
+      if (typeof value === 'string') {
+        const parsed = parseFloat(value);
+        return isNaN(parsed) ? 0 : parsed;
+      }
+      return typeof value === 'number' ? value : 0;
+    };
+    
+    console.log('Perception Brain CPU:', parseValue(systemData.cpu.usage_percent) + '%');
+    console.log('Perception Brain Memory:', parseValue(systemData.memory.usage_percent) + '%');
+    console.log('Perception Brain Hostname:', systemData.system_info.hostname);
+    
+    // Process system monitoring data
+    updatePerceptionBrainMetrics(systemData);
+  } catch (error) {
+    console.error('Error parsing perception brain data:', error);
+  }
+});
+```
+
+##### Sample Perception Brain Data
+```json
+{
+  "data": "{\"header\":{\"timestamp\":\"1752077026.589248\",\"frame_id\":\"system_monitor\",\"node_name\":\"perception_brain_system_monitor\"},\"cpu\":{\"usage_percent\":\"2.5\",\"temperature\":\"0.0\",\"core_count\":\"8\",\"core_usage\":\"0.0,0.0,0.0,0.0,9.1,0.0,0.0,9.1\",\"frequency_mhz\":\"768.0\"},\"memory\":{\"total_bytes\":\"16415924224\",\"used_bytes\":\"3798114304\",\"available_bytes\":\"12267659264\",\"usage_percent\":\"25.3\",\"total_gb\":\"15.3\",\"used_gb\":\"3.5\",\"available_gb\":\"11.4\"},\"gpu\":{\"available\":\"true\",\"usage_percent\":\"0.0\",\"temperature\":\"0.0\",\"memory_total_bytes\":\"0\",\"memory_used_bytes\":\"0\",\"memory_usage_percent\":\"0.0\",\"memory_total_gb\":\"0.0\",\"memory_used_gb\":\"0.0\"},\"storage\":{\"total_bytes\":\"1005442326528\",\"used_bytes\":\"35824812032\",\"available_bytes\":\"918468345856\",\"usage_percent\":\"3.6\",\"path\":\"/\",\"total_gb\":\"936.4\",\"used_gb\":\"33.4\",\"available_gb\":\"855.4\"},\"network\":{\"bytes_sent\":\"1887307664\",\"bytes_received\":\"1774041922\",\"packets_sent\":\"13786580\",\"packets_received\":\"13760789\",\"bytes_sent_mb\":\"1799.9\",\"bytes_received_mb\":\"1691.9\"},\"system_load\":{\"load_1min\":\"0.64\",\"load_5min\":\"0.69\",\"load_15min\":\"0.78\"},\"processes\":{\"process_count\":\"399\",\"thread_count\":\"929\"},\"uptime\":{\"seconds\":\"46504\",\"formatted\":\"12h 55m 4s\",\"days\":\"0\",\"hours\":\"12\",\"minutes\":\"55\"},\"battery\":{\"available\":\"false\",\"percent\":\"0.0\",\"charging\":\"false\",\"time_remaining_minutes\":\"0\",\"time_remaining_hours\":\"0.0\"},\"system_info\":{\"platform\":\"Linux\",\"platform_release\":\"5.15.136-tegra\",\"platform_version\":\"#1 SMP PREEMPT Mon May 6 09:56:39 PDT 2024\",\"architecture\":\"aarch64\",\"hostname\":\"xavier-desktop\",\"processor\":\"aarch64\"}}"
+}
+```
+
+#### System Monitoring Integration Example
+
+```javascript
+class EnhancedSystemMonitoring {
+  constructor(ros) {
+    this.ros = ros;
+    this.systemData = {};
+    this.historicalData = [];
+    this.setupSubscriptions();
+  }
+
+  setupSubscriptions() {
+    // Subscribe to both brain systems
+    this.subscribeToCognitionBrain();
+    this.subscribeToPerceptionBrain();
+  }
+
+  subscribeToCognitionBrain() {
+    const cognitionTopic = new ROSLIB.Topic({
+      ros: this.ros,
+      name: '/cognitionbrain/system_monitoring',
+      messageType: 'std_msgs/String'
+    });
+
+    cognitionTopic.subscribe((message) => {
+      try {
+        const data = JSON.parse(message.data);
+        this.processSystemData(data, 'Cognition Brain', 'cognition');
+      } catch (error) {
+        console.error('Error processing cognition brain data:', error);
+      }
+    });
+  }
+
+  subscribeToPerceptionBrain() {
+    const perceptionTopic = new ROSLIB.Topic({
+      ros: this.ros,
+      name: '/perceptionbrain/system_monitoring',
+      messageType: 'std_msgs/String'
+    });
+
+    perceptionTopic.subscribe((message) => {
+      try {
+        const data = JSON.parse(message.data);
+        this.processSystemData(data, 'Perception Brain', 'perception');
+      } catch (error) {
+        console.error('Error processing perception brain data:', error);
+      }
+    });
+  }
+
+  processSystemData(data, brainName, brainKey) {
+    // Normalize data format differences between brain systems
+    const parseValue = (value) => {
+      if (typeof value === 'string') {
+        const parsed = parseFloat(value);
+        return isNaN(parsed) ? 0 : parsed;
+      }
+      return typeof value === 'number' ? value : 0;
+    };
+
+    const normalizedMetrics = {
+      timestamp: Date.now(),
+      cpuUsage: parseValue(data.cpu?.usage || data.cpu?.usage_percent),
+      memoryUsage: parseValue(data.memory?.usage || data.memory?.usage_percent),
+      diskUsage: parseValue(data.disk?.usage || data.storage?.usage_percent),
+      temperature: parseValue(data.cpu?.temperature || data.thermal?.temperature),
+      networkRx: parseValue(data.network?.bytes_received),
+      networkTx: parseValue(data.network?.bytes_sent),
+      processCount: parseValue(data.processes?.process_count),
+      uptime: parseValue(data.uptime_seconds || data.uptime?.seconds),
+      loadAverage: [
+        parseValue(data.system_load?.load_1min),
+        parseValue(data.system_load?.load_5min),
+        parseValue(data.system_load?.load_15min)
+      ]
+    };
+
+    // Store normalized data
+    this.systemData[brainKey] = {
+      brainName,
+      metrics: normalizedMetrics,
+      isOnline: true,
+      lastUpdate: Date.now()
+    };
+
+    // Add to historical data for charts
+    this.addHistoricalDataPoint();
+    
+    // Update dashboard
+    this.updateDashboard();
+  }
+
+  addHistoricalDataPoint() {
+    const now = Date.now();
+    const timeString = new Date(now).toLocaleTimeString();
+    
+    const cognitionData = this.systemData['cognition'];
+    const perceptionData = this.systemData['perception'];
+    
+    if (cognitionData || perceptionData) {
+      const dataPoint = {
+        timestamp: now,
+        time: timeString,
+        cognitionCpu: cognitionData?.metrics.cpuUsage || 0,
+        perceptionCpu: perceptionData?.metrics.cpuUsage || 0,
+        cognitionMemory: cognitionData?.metrics.memoryUsage || 0,
+        perceptionMemory: perceptionData?.metrics.memoryUsage || 0,
+        cognitionTemp: cognitionData?.metrics.temperature || 0,
+        perceptionTemp: perceptionData?.metrics.temperature || 0
+      };
+      
+      this.historicalData.push(dataPoint);
+      
+      // Keep only last 60 data points (1 minute at 1-second intervals)
+      if (this.historicalData.length > 60) {
+        this.historicalData.shift();
+      }
+    }
+  }
+
+  updateDashboard() {
+    // Update charts and UI components
+    console.log('System data updated:', this.systemData);
+    console.log('Historical data points:', this.historicalData.length);
+  }
+}
+
+// Usage
+const ros = new ROSLIB.Ros({ url: 'ws://localhost:9090' });
+const systemMonitoring = new EnhancedSystemMonitoring(ros);
+```
+
+#### System Monitoring Troubleshooting
+
+##### Common Issues
+
+###### 1. No System Monitoring Data
+```bash
+# Check if system monitoring topics exist
+ros2 topic list | grep system_monitoring
+
+# Check if nodes are publishing
+ros2 topic hz /cognitionbrain/system_monitoring
+ros2 topic hz /perceptionbrain/system_monitoring
+
+# Echo topic data to verify format
+ros2 topic echo /cognitionbrain/system_monitoring --field data
+```
+
+###### 2. JSON Parsing Errors
+```javascript
+// Add error handling for malformed JSON
+cognitionTopic.subscribe((message) => {
+  try {
+    const data = JSON.parse(message.data);
+    // Process data...
+  } catch (error) {
+    console.error('JSON parsing error:', error);
+    console.log('Raw message:', message.data);
+  }
+});
+```
+
+###### 3. Data Format Inconsistencies
+```javascript
+// Robust value parsing function
+const parseValue = (value) => {
+  if (value === null || value === undefined) return 0;
+  if (typeof value === 'string') {
+    // Handle comma-separated values (like core_usage)
+    if (value.includes(',')) {
+      return value.split(',').map(v => parseFloat(v.trim()) || 0);
+    }
+    const parsed = parseFloat(value);
+    return isNaN(parsed) ? 0 : parsed;
+  }
+  return typeof value === 'number' ? value : 0;
+};
+```
+
+###### 4. Performance Issues with High-Frequency Data
+```javascript
+// Implement data throttling
+let lastUpdateTime = 0;
+const UPDATE_INTERVAL = 1000; // 1 second
+
+cognitionTopic.subscribe((message) => {
+  const now = Date.now();
+  if (now - lastUpdateTime < UPDATE_INTERVAL) {
+    return; // Skip this update
+  }
+  lastUpdateTime = now;
+  
+  // Process data...
+});
+```
+
+##### Debug Commands for System Monitoring
+
+```bash
+# Check system monitoring node status
+ros2 node list | grep system_monitor
+
+# Verify topic message types
+ros2 topic info /cognitionbrain/system_monitoring
+ros2 topic info /perceptionbrain/system_monitoring
+
+# Monitor topic frequency
+ros2 topic hz /cognitionbrain/system_monitoring
+ros2 topic hz /perceptionbrain/system_monitoring
+
+# Check for any errors in topic data
+ros2 topic echo /cognitionbrain/system_monitoring | head -5
+ros2 topic echo /perceptionbrain/system_monitoring | head -5
 ```
 
 ## Navigation Topics
