@@ -72,6 +72,16 @@ class TestPublisherLauncher:
                 'script': 'robot_control_test_publisher.py',
                 'description': 'Robot control, odometry, and navigation status',
                 'topics': ['/odom', '/robot_status', '/joy']
+            },
+            'environmental': {
+                'script': 'environmental_sensor_test_publisher.py',
+                'description': 'Environmental sensors (temperature, humidity, gas detection, air quality)',
+                'topics': ['/environmental/temperature', '/environmental/humidity', '/environmental/methane', '/environmental/carbon_monoxide', '/environmental/nitrogen_dioxide', '/environmental/pm25', '/environmental/pm10', '/environmental/air_quality_index']
+            },
+            'robot_status': {
+                'script': 'robot_status_test_publisher.py',
+                'description': 'Robot status monitoring (idle, ready, running, not responding, error)',
+                'topics': ['/robot/status', '/robot/heartbeat', '/robot/current_task', '/robot/task_progress', '/robot/system_health']
             }
         }
 
@@ -237,6 +247,8 @@ class TestPublisherLauncher:
         print("   • Battery Monitor: http://localhost:3000/battery")
         print("   • System Monitor: http://localhost:3000/system-monitoring")
         print("   • IMU Sensor: http://localhost:3000/imu-sensor")
+        print("   • Environmental Sensors: http://localhost:3000/environmental-sensors")
+        print("   • Robot Status: http://localhost:3000/robot-status")
         print("   • Robot Control: http://localhost:3000/control")
         
         print("\n📋 Monitoring Status:")

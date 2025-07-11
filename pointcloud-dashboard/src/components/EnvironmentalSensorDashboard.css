@@ -1,0 +1,723 @@
+.environmental-dashboard {
+  height: 100vh;
+  background: 
+    linear-gradient(135deg, #0a0a0a 0%, #0f1419 30%, #1a1a2e 70%, #0a0a0a 100%),
+    radial-gradient(circle at 20% 20%, rgba(0, 255, 100, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 170, 0, 0.05) 0%, transparent 50%);
+  color: #ffffff;
+  font-family: 'Orbitron', 'Roboto Mono', 'Courier New', monospace;
+  padding: 15px;
+  overflow: hidden;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 15px;
+}
+
+.environmental-dashboard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0, 255, 100, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 100, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+  animation: gridShift 12s linear infinite;
+}
+
+@keyframes gridShift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+.environmental-header {
+  margin-bottom: 20px;
+  border-bottom: 2px solid #00ff64;
+  padding-bottom: 15px;
+}
+
+.environmental-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.environmental-title h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  background: linear-gradient(45deg, #00ff64, #ffaa00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px rgba(0, 255, 100, 0.3);
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 25px;
+  border: 1px solid #333;
+}
+
+.status-indicator {
+  font-size: 1.2rem;
+  animation: pulse 2s infinite;
+}
+
+.status-indicator.connected {
+  color: #00ff64;
+}
+
+.status-indicator.disconnected {
+  color: #ff4444;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.environmental-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 200px auto auto auto;
+  gap: 20px;
+  height: calc(100vh - 120px);
+  position: relative;
+  z-index: 1;
+  overflow-y: auto;
+  padding: 10px 0;
+}
+
+/* Air Quality Overview - Spans full width */
+.air-quality-overview {
+  grid-column: 1 / -1;
+  background: 
+    linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 40, 20, 0.8)),
+    radial-gradient(circle at 30% 30%, rgba(0, 255, 100, 0.08) 0%, transparent 50%);
+  border: 2px solid rgba(0, 255, 100, 0.4);
+  border-radius: 20px;
+  padding: 25px;
+  backdrop-filter: blur(15px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 0 40px rgba(0, 255, 100, 0.15),
+    inset 0 0 40px rgba(0, 255, 100, 0.03);
+}
+
+.air-quality-overview::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(0, 255, 100, 0.03) 90deg, transparent 180deg, rgba(0, 255, 100, 0.03) 270deg, transparent 360deg);
+  pointer-events: none;
+  z-index: 0;
+  animation: holoRotate 25s linear infinite;
+}
+
+@keyframes holoRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.aqi-display {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.aqi-circle {
+  width: 140px;
+  height: 140px;
+  border: 4px solid #00ff64;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: 
+    radial-gradient(circle, rgba(0, 0, 0, 0.8) 0%, rgba(0, 40, 20, 0.6) 100%);
+  box-shadow: 
+    0 0 30px rgba(0, 255, 100, 0.4),
+    inset 0 0 20px rgba(0, 255, 100, 0.1);
+  animation: aqiPulse 3s ease-in-out infinite alternate;
+  position: relative;
+}
+
+@keyframes aqiPulse {
+  0% { 
+    box-shadow: 
+      0 0 30px rgba(0, 255, 100, 0.4),
+      inset 0 0 20px rgba(0, 255, 100, 0.1);
+  }
+  100% { 
+    box-shadow: 
+      0 0 50px rgba(0, 255, 100, 0.6),
+      inset 0 0 30px rgba(0, 255, 100, 0.2);
+  }
+}
+
+.aqi-value {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #00ff64;
+  text-shadow: 
+    0 0 20px rgba(0, 255, 100, 0.8),
+    0 0 40px rgba(0, 255, 100, 0.4);
+  line-height: 1;
+}
+
+.aqi-label {
+  font-size: 0.9rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 5px;
+}
+
+.aqi-info {
+  flex: 1;
+}
+
+.aqi-level {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-shadow: 0 0 15px currentColor;
+}
+
+.aqi-description {
+  font-size: 1.1rem;
+  color: #ccc;
+  line-height: 1.4;
+  max-width: 400px;
+}
+
+/* Sensor Sections */
+.sensor-section {
+  background: 
+    linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 20, 40, 0.8)),
+    radial-gradient(circle at 20% 20%, rgba(0, 255, 100, 0.05) 0%, transparent 50%);
+  border: 1px solid rgba(0, 255, 100, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.sensor-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00ff64, #ffaa00);
+  opacity: 0.6;
+}
+
+.sensor-section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  color: #00ff64;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(0, 255, 100, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+/* Sensor Card Grids */
+.temp-humidity-grid,
+.gas-sensors-grid,
+.particulate-grid,
+.status-summary-grid {
+  display: grid;
+  gap: 15px;
+}
+
+.temp-humidity-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.gas-sensors-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.particulate-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.status-summary-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Sensor Cards */
+.sensor-card {
+  background: 
+    linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 40, 20, 0.7));
+  border: 1px solid rgba(0, 255, 100, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sensor-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 100, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.sensor-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00ff64, #ffaa00);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.sensor-card:hover::before {
+  left: 100%;
+}
+
+.sensor-card:hover::after {
+  transform: scaleX(1);
+}
+
+.sensor-card:hover {
+  border-color: #00ff64;
+  box-shadow: 
+    0 8px 25px rgba(0, 255, 100, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.sensor-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 100, 0.3));
+}
+
+.sensor-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  text-shadow: 
+    0 0 15px currentColor,
+    0 0 30px rgba(0, 255, 100, 0.3);
+  line-height: 1;
+}
+
+.sensor-unit {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.sensor-label {
+  font-size: 0.8rem;
+  color: #00ff64;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.sensor-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.sensor-fill {
+  height: 100%;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 3px;
+  background: linear-gradient(90deg, #00ff64, #ffaa00);
+  box-shadow: 0 0 10px rgba(0, 255, 100, 0.5);
+}
+
+.safety-threshold {
+  font-size: 0.7rem;
+  color: #666;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+/* Specific Card Styling */
+.temperature-card {
+  border-color: rgba(0, 170, 255, 0.3);
+}
+
+.temperature-card .sensor-icon,
+.temperature-card .sensor-label {
+  color: #00aaff;
+}
+
+.humidity-card {
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+.humidity-card .sensor-icon,
+.humidity-card .sensor-label {
+  color: #00ffff;
+}
+
+.methane-card {
+  border-color: rgba(255, 100, 0, 0.3);
+}
+
+.methane-card .sensor-icon,
+.methane-card .sensor-label {
+  color: #ff6400;
+}
+
+.co-card {
+  border-color: rgba(255, 68, 68, 0.3);
+}
+
+.co-card .sensor-icon,
+.co-card .sensor-label {
+  color: #ff4444;
+}
+
+.no2-card {
+  border-color: rgba(138, 43, 226, 0.3);
+}
+
+.no2-card .sensor-icon,
+.no2-card .sensor-label {
+  color: #8a2be2;
+}
+
+.pm25-card {
+  border-color: rgba(255, 165, 0, 0.3);
+}
+
+.pm25-card .sensor-icon,
+.pm25-card .sensor-label {
+  color: #ffa500;
+}
+
+.pm10-card {
+  border-color: rgba(255, 140, 0, 0.3);
+}
+
+.pm10-card .sensor-icon,
+.pm10-card .sensor-label {
+  color: #ff8c00;
+}
+
+.dust-density-card {
+  border-color: rgba(210, 180, 140, 0.3);
+}
+
+.dust-density-card .sensor-icon,
+.dust-density-card .sensor-label {
+  color: #d2b48c;
+}
+
+/* Status Cards */
+.status-card {
+  background: 
+    linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 20, 40, 0.7));
+  border: 1px solid rgba(0, 255, 100, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-card:hover {
+  border-color: #00ff64;
+  box-shadow: 0 0 15px rgba(0, 255, 100, 0.2);
+  transform: translateY(-2px);
+}
+
+.status-icon {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.status-label {
+  font-size: 0.7rem;
+  color: #888;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* Loading State */
+.environmental-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  gap: 30px;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(0, 255, 100, 0.3);
+  border-top: 4px solid #00ff64;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 1.5rem;
+  color: #00ff64;
+  text-align: center;
+  animation: pulse 2s infinite;
+}
+
+.test-data-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+  align-items: center;
+}
+
+.test-data-button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #00ff64, #ffaa00);
+  border: none;
+  border-radius: 25px;
+  color: #000;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 255, 100, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.test-data-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 255, 100, 0.4);
+}
+
+.test-data-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.test-data-button.stop {
+  background: linear-gradient(135deg, #ff4444, #ff8800);
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+}
+
+.test-data-button.stop:hover {
+  box-shadow: 0 6px 20px rgba(255, 68, 68, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .gas-sensors-grid,
+  .particulate-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .status-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 1200px) {
+  .environmental-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .aqi-display {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .environmental-dashboard {
+    padding: 10px;
+  }
+  
+  .environmental-title {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .environmental-title h1 {
+    font-size: 2rem;
+  }
+  
+  .temp-humidity-grid,
+  .gas-sensors-grid,
+  .particulate-grid,
+  .status-summary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .aqi-circle {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .aqi-value {
+    font-size: 2rem;
+  }
+  
+  .sensor-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sensor-section {
+    padding: 15px;
+  }
+  
+  .air-quality-overview {
+    padding: 20px;
+  }
+  
+  .sensor-card {
+    padding: 15px;
+    min-height: 120px;
+  }
+}
+
+/* Enhanced Visual Effects */
+@keyframes dataUpdate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.sensor-value {
+  animation: dataUpdate 0.3s ease when data changes;
+}
+
+/* Critical Level Animations */
+.critical-warning {
+  animation: criticalBlink 1s infinite alternate;
+  border-color: #ff4444 !important;
+  box-shadow: 0 0 20px rgba(255, 68, 68, 0.5) !important;
+}
+
+@keyframes criticalBlink {
+  0% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* Particle Effect for Air Quality */
+.air-quality-overview::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(0, 255, 100, 0.1), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 170, 0, 0.1), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.1), transparent);
+  background-repeat: repeat;
+  background-size: 150px 100px;
+  animation: particleFloat 20s linear infinite;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-100px); }
+}
+
+/* Glow effects for different sensor types */
+.temperature-card:hover {
+  box-shadow: 0 0 25px rgba(0, 170, 255, 0.3) !important;
+}
+
+.humidity-card:hover {
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.3) !important;
+}
+
+.methane-card:hover {
+  box-shadow: 0 0 25px rgba(255, 100, 0, 0.3) !important;
+}
+
+.co-card:hover {
+  box-shadow: 0 0 25px rgba(255, 68, 68, 0.3) !important;
+}
+
+.no2-card:hover {
+  box-shadow: 0 0 25px rgba(138, 43, 226, 0.3) !important;
+}
+
+.pm25-card:hover,
+.pm10-card:hover,
+.dust-density-card:hover {
+  box-shadow: 0 0 25px rgba(255, 165, 0, 0.3) !important;
+}

@@ -52,6 +52,22 @@ const Navigation: React.FC = () => {
           <span className="nav-icon">🧭</span>
           <span className="nav-text">IMU Sensor Monitor</span>
         </Link>
+        
+        <Link 
+          to="/environmental-sensors" 
+          className={`nav-link ${location.pathname === '/environmental-sensors' ? 'active' : ''}`}
+        >
+          <span className="nav-icon">🌍</span>
+          <span className="nav-text">Environmental Sensors</span>
+        </Link>
+        
+        <Link 
+          to="/robot-status" 
+          className={`nav-link ${location.pathname === '/robot-status' ? 'active' : ''}`}
+        >
+          <span className="nav-icon">🤖</span>
+          <span className="nav-text">Robot Status</span>
+        </Link>
       </div>
       
       <div className="nav-status">

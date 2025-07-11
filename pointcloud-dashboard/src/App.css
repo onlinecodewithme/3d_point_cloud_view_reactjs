@@ -181,6 +181,26 @@
   margin: 0;
 }
 
+/* Environmental sensor page styles */
+.environmental-sensor-main {
+  width: 100%;
+  height: calc(100vh - 60px); /* Account for navigation height */
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(135deg, #0a0a0a 0%, #0f1419 30%, #1a1a2e 70%, #0a0a0a 100%);
+}
+
+/* Robot status page styles */
+.robot-status-main {
+  width: 100%;
+  height: calc(100vh - 60px); /* Account for navigation height */
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(135deg, #0a0a0a 0%, #0f1419 30%, #1a1a2e 70%, #0a0a0a 100%);
+}
+
 .App-header {
   background-color: #282c34;
   padding: 20px;
