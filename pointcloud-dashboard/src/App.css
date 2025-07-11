@@ -137,68 +137,123 @@
   font-weight: bold;
 }
 
+/* Main content area adjustments for new header and drawer */
+main {
+  margin-top: 60px; /* Account for fixed header */
+  margin-left: 320px; /* Account for drawer width when open */
+  transition: margin-left 0.3s ease-out;
+}
+
 /* Control page styles */
 .control-main {
-  width: 100%;
-  height: calc(100vh - 60px); /* Account for navigation height */
+  width: calc(100% - 320px); /* Account for drawer width */
+  height: calc(100vh - 60px); /* Account for header height */
   overflow: hidden;
+  margin-top: 0; /* Override main margin for full height pages */
+  margin-left: 320px; /* Account for drawer */
+  transition: margin-left 0.3s ease-out, width 0.3s ease-out;
 }
 
 /* Battery page styles */
 .battery-main {
-  width: 100%;
-  height: calc(100vh - 60px); /* Account for navigation height */
+  width: calc(100% - 320px); /* Account for drawer width */
+  height: calc(100vh - 60px); /* Account for header height */
   overflow-y: auto;
   padding: 0;
   margin: 0;
+  margin-top: 0; /* Override main margin for full height pages */
+  margin-left: 320px; /* Account for drawer */
+  transition: margin-left 0.3s ease-out, width 0.3s ease-out;
 }
 
 /* System monitoring page styles */
 .system-monitoring-main {
-  width: 100%;
-  height: calc(100vh - 60px); /* Account for navigation height */
+  width: calc(100% - 320px); /* Account for drawer width */
+  height: calc(100vh - 60px); /* Account for header height */
   overflow-y: auto;
   padding: 0;
   margin: 0;
+  margin-top: 0; /* Override main margin for full height pages */
+  margin-left: 320px; /* Account for drawer */
+  transition: margin-left 0.3s ease-out, width 0.3s ease-out;
 }
 
 /* Enhanced system monitoring page styles */
 .enhanced-system-monitoring-main {
-  width: 100%;
-  height: calc(100vh - 60px); /* Account for navigation height */
+  width: calc(100% - 320px); /* Account for drawer width */
+  height: calc(100vh - 60px); /* Account for header height */
   overflow-y: auto;
   padding: 0;
   margin: 0;
+  margin-top: 0; /* Override main margin for full height pages */
+  margin-left: 320px; /* Account for drawer */
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  transition: margin-left 0.3s ease-out, width 0.3s ease-out;
 }
 
 /* IMU sensor page styles */
 .imu-sensor-main {
-  width: 100%;
-  height: calc(100vh - 60px); /* Account for navigation height */
+  width: calc(100% - 320px); /* Account for drawer width */
+  height: calc(100vh - 60px); /* Account for header height */
   overflow-y: auto;
   padding: 0;
   margin: 0;
+  margin-top: 0; /* Override main margin for full height pages */
+  margin-left: 320px; /* Account for drawer */
+  transition: margin-left 0.3s ease-out, width 0.3s ease-out;
 }
 
 /* Environmental sensor page styles */
 .environmental-sensor-main {
-  width: 100%;
-  height: calc(100vh - 60px); /* Account for navigation height */
+  width: calc(100% - 320px); /* Account for drawer width */
+  height: calc(100vh - 60px); /* Account for header height */
   overflow-y: auto;
   padding: 0;
   margin: 0;
+  margin-top: 0; /* Override main margin for full height pages */
+  margin-left: 320px; /* Account for drawer */
   background: linear-gradient(135deg, #0a0a0a 0%, #0f1419 30%, #1a1a2e 70%, #0a0a0a 100%);
+  transition: margin-left 0.3s ease-out, width 0.3s ease-out;
 }
 
 /* Robot status page styles */
 .robot-status-main {
-  width: 100%;
-  height: calc(100vh - 60px); /* Account for navigation height */
+  width: calc(100% - 320px); /* Account for drawer width */
+  height: calc(100vh - 60px); /* Account for header height */
   overflow-y: auto;
   padding: 0;
   margin: 0;
+  margin-top: 0; /* Override main margin for full height pages */
+  margin-left: 320px; /* Account for drawer */
   background: linear-gradient(135deg, #0a0a0a 0%, #0f1419 30%, #1a1a2e 70%, #0a0a0a 100%);
+  transition: margin-left 0.3s ease-out, width 0.3s ease-out;
+}
+
+/* Profile page styles */
+.profile-main {
+  width: calc(100% - 320px); /* Account for drawer width */
+  min-height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+  margin-left: 320px; /* Account for drawer */
+  transition: margin-left 0.3s ease-out, width 0.3s ease-out;
+}
+
+/* Responsive adjustments for drawer */
+@media (max-width: 768px) {
+  main,
+  .control-main,
+  .battery-main,
+  .system-monitoring-main,
+  .enhanced-system-monitoring-main,
+  .imu-sensor-main,
+  .environmental-sensor-main,
+  .robot-status-main,
+  .profile-main {
+    margin-left: 0;
+    width: 100%;
+  }
 }
 
 .App-header {
@@ -217,4 +272,45 @@
   margin: 0;
   color: #ccc;
   font-size: 1rem;
+}
+
+/* Authentication loading styles */
+.app-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  color: #ffffff;
+  gap: 20px;
+}
+
+.app-loading .loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #00ff41;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.app-loading p {
+  font-size: 1.2rem;
+  color: #cccccc;
+  margin: 0;
+}
+
+/* Profile page styles */
+.profile-main {
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 0;
+  margin: 0;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

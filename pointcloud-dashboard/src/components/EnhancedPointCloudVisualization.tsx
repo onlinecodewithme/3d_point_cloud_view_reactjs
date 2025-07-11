@@ -9,6 +9,8 @@ import MappingWidget from './MappingWidget';
 import RTABMapWidget from './RTABMapWidget';
 import BatteryWidget from './BatteryWidget';
 import SystemMonitoringWidget from './SystemMonitoringWidget';
+import EnvironmentalSensorWidget from './EnvironmentalSensorWidget';
+import RobotStatusWidget from './RobotStatusWidget';
 import WidgetManager from './WidgetManager';
 
 interface PointCloudData {
@@ -541,7 +543,7 @@ const EnhancedPointCloudVisualization: React.FC = () => {
     // Implement RTAB-Map load logic
   };
 
-  // Widget configuration
+  // Widget configuration - positions account for drawer (320px) and header (60px)
   const [widgets, setWidgets] = useState<any[]>([
     {
       id: 'mapping-controls',
@@ -560,7 +562,7 @@ const EnhancedPointCloudVisualization: React.FC = () => {
         onVoxelSizeChange: setVoxelSize,
         isProcessing
       },
-      defaultPosition: { x: 20, y: 20 },
+      defaultPosition: { x: 340, y: 80 }, // Account for drawer + margin
       defaultSize: { width: 380, height: 450 },
       minSize: { width: 300, height: 350 },
       maxSize: { width: 500, height: 600 },
@@ -595,7 +597,7 @@ const EnhancedPointCloudVisualization: React.FC = () => {
         onLoopClosureThresholdChange: setLoopClosureThreshold,
         rtabMapStats
       },
-      defaultPosition: { x: 20, y: window.innerHeight - 520 },
+      defaultPosition: { x: 340, y: window.innerHeight - 580 }, // Account for drawer + footer
       defaultSize: { width: 380, height: 500 },
       minSize: { width: 300, height: 400 },
       maxSize: { width: 500, height: 700 },
@@ -615,7 +617,7 @@ const EnhancedPointCloudVisualization: React.FC = () => {
         onWaypointAdded: (waypoint: any) => console.log('Waypoint added:', waypoint),
         onNavigationStarted: (waypoint: any) => console.log('Navigation started to:', waypoint)
       },
-      defaultPosition: { x: window.innerWidth - 420, y: 20 },
+      defaultPosition: { x: window.innerWidth - 420, y: 80 }, // Account for header
       defaultSize: { width: 400, height: 850 },
       minSize: { width: 350, height: 700 },
       maxSize: { width: 600, height: 1000 },
@@ -633,7 +635,7 @@ const EnhancedPointCloudVisualization: React.FC = () => {
         isConnected,
         compact: false
       },
-      defaultPosition: { x: 20, y: window.innerHeight - 520 },
+      defaultPosition: { x: 340, y: window.innerHeight - 580 }, // Account for drawer + footer
       defaultSize: { width: 400, height: 500 },
       minSize: { width: 300, height: 400 },
       maxSize: { width: 500, height: 700 },
@@ -651,10 +653,46 @@ const EnhancedPointCloudVisualization: React.FC = () => {
         isConnected,
         compact: false
       },
-      defaultPosition: { x: window.innerWidth - 420, y: window.innerHeight - 520 },
+      defaultPosition: { x: window.innerWidth - 420, y: window.innerHeight - 580 }, // Account for footer
       defaultSize: { width: 400, height: 500 },
       minSize: { width: 350, height: 450 },
       maxSize: { width: 600, height: 700 },
+      resizable: true,
+      collapsible: true,
+      visible: false
+    },
+    {
+      id: 'environmental-sensors',
+      title: 'Environmental Sensors',
+      icon: '🌍',
+      component: EnvironmentalSensorWidget,
+      props: {
+        ros: rosRef.current,
+        isConnected,
+        compact: false
+      },
+      defaultPosition: { x: 770, y: 80 }, // Account for drawer + margin
+      defaultSize: { width: 400, height: 400 },
+      minSize: { width: 300, height: 350 },
+      maxSize: { width: 500, height: 600 },
+      resizable: true,
+      collapsible: true,
+      visible: false
+    },
+    {
+      id: 'robot-status',
+      title: 'Robot Status Monitor',
+      icon: '🤖',
+      component: RobotStatusWidget,
+      props: {
+        ros: rosRef.current,
+        isConnected,
+        compact: false
+      },
+      defaultPosition: { x: 770, y: 510 }, // Account for drawer + spacing
+      defaultSize: { width: 400, height: 400 },
+      minSize: { width: 300, height: 350 },
+      maxSize: { width: 500, height: 600 },
       resizable: true,
       collapsible: true,
       visible: false
@@ -725,6 +763,24 @@ const EnhancedPointCloudVisualization: React.FC = () => {
             isConnected
           }
         };
+      } else if (widget.id === 'environmental-sensors') {
+        return {
+          ...widget,
+          props: {
+            ...widget.props,
+            ros: rosRef.current,
+            isConnected
+          }
+        };
+      } else if (widget.id === 'robot-status') {
+        return {
+          ...widget,
+          props: {
+            ...widget.props,
+            ros: rosRef.current,
+            isConnected
+          }
+        };
       }
       return widget;
     }));
@@ -773,8 +829,6 @@ const EnhancedPointCloudVisualization: React.FC = () => {
           maxDistance={50}
           minDistance={0.1}
         />
-        
-        <Stats />
         
         {/* Grid helper for reference */}
         <gridHelper args={[20, 20]} />
