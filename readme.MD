@@ -10,6 +10,9 @@ A comprehensive real-time 3D point cloud visualization dashboard built with Reac
 
 ## 📸 Live Dashboard Screenshot
 
+![alt text](screenshots/login.png)
+![alt text](screenshots/register.png)
+![alt text](screenshots/envdata.png)
 ![alt text](screenshots/image.png)
 ![alt text](screenshots/image-controlpanel.png)
 ![alt text](screenshots/ocu-map.png)
