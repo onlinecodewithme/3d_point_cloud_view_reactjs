@@ -103,9 +103,14 @@ const DraggableWidget: React.FC<DraggableWidgetProps> = ({
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isDragging) {
+        // Account for drawer width (320px) and header height (60px)
+        const drawerWidth = 320;
+        const headerHeight = 60;
+        const footerHeight = 60;
+        
         const newPosition = {
-          x: Math.max(0, Math.min(window.innerWidth - size.width, e.clientX - dragOffset.x)),
-          y: Math.max(0, Math.min(window.innerHeight - 50, e.clientY - dragOffset.y))
+          x: Math.max(drawerWidth, Math.min(window.innerWidth - size.width, e.clientX - dragOffset.x)),
+          y: Math.max(headerHeight, Math.min(window.innerHeight - footerHeight - 50, e.clientY - dragOffset.y))
         };
         setPosition(newPosition);
         onPositionChange?.(id, newPosition);

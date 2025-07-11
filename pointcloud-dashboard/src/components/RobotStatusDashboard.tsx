@@ -434,7 +434,7 @@ const RobotStatusDashboard: React.FC = () => {
                         backgroundColor: statusConfigs[robotStatus.status].color
                       }}
                     />
-                    <div className="progress-text">{robotStatus.taskProgress.toFixed(1)}%</div>
+                    <div className="progress-text">{(robotStatus.taskProgress || 0).toFixed(1)}%</div>
                   </div>
                 )}
               </div>
@@ -471,16 +471,16 @@ const RobotStatusDashboard: React.FC = () => {
                 <div className="health-label">CPU Usage</div>
                 <div 
                   className="health-value"
-                  style={{ color: getHealthColor(robotStatus.systemHealth.cpu, 'cpu') }}
+                  style={{ color: getHealthColor(robotStatus.systemHealth?.cpu || 0, 'cpu') }}
                 >
-                  {robotStatus.systemHealth.cpu.toFixed(1)}%
+                  {(robotStatus.systemHealth?.cpu || 0).toFixed(1)}%
                 </div>
                 <div className="health-bar">
                   <div 
                     className="health-fill"
                     style={{
-                      width: `${robotStatus.systemHealth.cpu}%`,
-                      backgroundColor: getHealthColor(robotStatus.systemHealth.cpu, 'cpu')
+                      width: `${robotStatus.systemHealth?.cpu || 0}%`,
+                      backgroundColor: getHealthColor(robotStatus.systemHealth?.cpu || 0, 'cpu')
                     }}
                   />
                 </div>
@@ -491,16 +491,16 @@ const RobotStatusDashboard: React.FC = () => {
                 <div className="health-label">Memory Usage</div>
                 <div 
                   className="health-value"
-                  style={{ color: getHealthColor(robotStatus.systemHealth.memory, 'memory') }}
+                  style={{ color: getHealthColor(robotStatus.systemHealth?.memory || 0, 'memory') }}
                 >
-                  {robotStatus.systemHealth.memory.toFixed(1)}%
+                  {(robotStatus.systemHealth?.memory || 0).toFixed(1)}%
                 </div>
                 <div className="health-bar">
                   <div 
                     className="health-fill"
                     style={{
-                      width: `${robotStatus.systemHealth.memory}%`,
-                      backgroundColor: getHealthColor(robotStatus.systemHealth.memory, 'memory')
+                      width: `${robotStatus.systemHealth?.memory || 0}%`,
+                      backgroundColor: getHealthColor(robotStatus.systemHealth?.memory || 0, 'memory')
                     }}
                   />
                 </div>
@@ -511,16 +511,16 @@ const RobotStatusDashboard: React.FC = () => {
                 <div className="health-label">Temperature</div>
                 <div 
                   className="health-value"
-                  style={{ color: getHealthColor(robotStatus.systemHealth.temperature, 'temperature') }}
+                  style={{ color: getHealthColor(robotStatus.systemHealth?.temperature || 0, 'temperature') }}
                 >
-                  {robotStatus.systemHealth.temperature.toFixed(1)}°C
+                  {(robotStatus.systemHealth?.temperature || 0).toFixed(1)}°C
                 </div>
                 <div className="health-bar">
                   <div 
                     className="health-fill"
                     style={{
-                      width: `${Math.min(robotStatus.systemHealth.temperature, 100)}%`,
-                      backgroundColor: getHealthColor(robotStatus.systemHealth.temperature, 'temperature')
+                      width: `${Math.min(robotStatus.systemHealth?.temperature || 0, 100)}%`,
+                      backgroundColor: getHealthColor(robotStatus.systemHealth?.temperature || 0, 'temperature')
                     }}
                   />
                 </div>
@@ -531,16 +531,16 @@ const RobotStatusDashboard: React.FC = () => {
                 <div className="health-label">Disk Usage</div>
                 <div 
                   className="health-value"
-                  style={{ color: getHealthColor(robotStatus.systemHealth.diskSpace, 'disk') }}
+                  style={{ color: getHealthColor(robotStatus.systemHealth?.diskSpace || 0, 'disk') }}
                 >
-                  {robotStatus.systemHealth.diskSpace.toFixed(1)}%
+                  {(robotStatus.systemHealth?.diskSpace || 0).toFixed(1)}%
                 </div>
                 <div className="health-bar">
                   <div 
                     className="health-fill"
                     style={{
-                      width: `${robotStatus.systemHealth.diskSpace}%`,
-                      backgroundColor: getHealthColor(robotStatus.systemHealth.diskSpace, 'disk')
+                      width: `${robotStatus.systemHealth?.diskSpace || 0}%`,
+                      backgroundColor: getHealthColor(robotStatus.systemHealth?.diskSpace || 0, 'disk')
                     }}
                   />
                 </div>
@@ -557,9 +557,9 @@ const RobotStatusDashboard: React.FC = () => {
                 <div className="subsystem-label">Navigation</div>
                 <div 
                   className="subsystem-status"
-                  style={{ color: getSubsystemColor(robotStatus.subsystems.navigation) }}
+                  style={{ color: getSubsystemColor(robotStatus.subsystems?.navigation || 'offline') }}
                 >
-                  {robotStatus.subsystems.navigation.toUpperCase()}
+                  {(robotStatus.subsystems?.navigation || 'offline').toUpperCase()}
                 </div>
               </div>
               
@@ -568,9 +568,9 @@ const RobotStatusDashboard: React.FC = () => {
                 <div className="subsystem-label">Perception</div>
                 <div 
                   className="subsystem-status"
-                  style={{ color: getSubsystemColor(robotStatus.subsystems.perception) }}
+                  style={{ color: getSubsystemColor(robotStatus.subsystems?.perception || 'offline') }}
                 >
-                  {robotStatus.subsystems.perception.toUpperCase()}
+                  {(robotStatus.subsystems?.perception || 'offline').toUpperCase()}
                 </div>
               </div>
               
@@ -579,9 +579,9 @@ const RobotStatusDashboard: React.FC = () => {
                 <div className="subsystem-label">Manipulation</div>
                 <div 
                   className="subsystem-status"
-                  style={{ color: getSubsystemColor(robotStatus.subsystems.manipulation) }}
+                  style={{ color: getSubsystemColor(robotStatus.subsystems?.manipulation || 'offline') }}
                 >
-                  {robotStatus.subsystems.manipulation.toUpperCase()}
+                  {(robotStatus.subsystems?.manipulation || 'offline').toUpperCase()}
                 </div>
               </div>
               
@@ -590,9 +590,9 @@ const RobotStatusDashboard: React.FC = () => {
                 <div className="subsystem-label">Communication</div>
                 <div 
                   className="subsystem-status"
-                  style={{ color: getSubsystemColor(robotStatus.subsystems.communication) }}
+                  style={{ color: getSubsystemColor(robotStatus.subsystems?.communication || 'offline') }}
                 >
-                  {robotStatus.subsystems.communication.toUpperCase()}
+                  {(robotStatus.subsystems?.communication || 'offline').toUpperCase()}
                 </div>
               </div>
             </div>
@@ -607,23 +607,23 @@ const RobotStatusDashboard: React.FC = () => {
                   <div className="connectivity-label">ROS Connection</div>
                   <div 
                     className="connectivity-value"
-                    style={{ color: robotStatus.connectivity.rosConnection ? '#00ff41' : '#ff4444' }}
+                    style={{ color: robotStatus.connectivity?.rosConnection ? '#00ff41' : '#ff4444' }}
                   >
-                    {robotStatus.connectivity.rosConnection ? '✅ Connected' : '❌ Disconnected'}
+                    {robotStatus.connectivity?.rosConnection ? '✅ Connected' : '❌ Disconnected'}
                   </div>
                 </div>
                 
                 <div className="connectivity-item">
                   <div className="connectivity-label">Network Latency</div>
                   <div className="connectivity-value">
-                    {robotStatus.connectivity.networkLatency.toFixed(0)}ms
+                    {(robotStatus.connectivity?.networkLatency || 0).toFixed(0)}ms
                   </div>
                 </div>
                 
                 <div className="connectivity-item">
                   <div className="connectivity-label">Signal Strength</div>
                   <div className="connectivity-value">
-                    {getSignalStrengthBars(robotStatus.connectivity.signalStrength)} {robotStatus.connectivity.signalStrength.toFixed(0)}%
+                    {getSignalStrengthBars(robotStatus.connectivity?.signalStrength || 0)} {(robotStatus.connectivity?.signalStrength || 0).toFixed(0)}%
                   </div>
                 </div>
               </div>
@@ -635,14 +635,14 @@ const RobotStatusDashboard: React.FC = () => {
                 <div className="location-item">
                   <div className="location-label">Position</div>
                   <div className="location-value">
-                    X: {robotStatus.location.x.toFixed(2)}m, Y: {robotStatus.location.y.toFixed(2)}m
+                    X: {(robotStatus.location?.x || 0).toFixed(2)}m, Y: {(robotStatus.location?.y || 0).toFixed(2)}m
                   </div>
                 </div>
                 
                 <div className="location-item">
                   <div className="location-label">Orientation</div>
                   <div className="location-value">
-                    {robotStatus.location.orientation.toFixed(1)}°
+                    {(robotStatus.location?.orientation || 0).toFixed(1)}°
                   </div>
                 </div>
                 
@@ -651,11 +651,11 @@ const RobotStatusDashboard: React.FC = () => {
                   <div 
                     className="location-value"
                     style={{ 
-                      color: robotStatus.batteryLevel > 50 ? '#00ff41' : 
-                             robotStatus.batteryLevel > 20 ? '#ffaa00' : '#ff4444'
+                      color: (robotStatus.batteryLevel || 0) > 50 ? '#00ff41' : 
+                             (robotStatus.batteryLevel || 0) > 20 ? '#ffaa00' : '#ff4444'
                     }}
                   >
-                    🔋 {robotStatus.batteryLevel.toFixed(1)}%
+                    🔋 {(robotStatus.batteryLevel || 0).toFixed(1)}%
                   </div>
                 </div>
               </div>

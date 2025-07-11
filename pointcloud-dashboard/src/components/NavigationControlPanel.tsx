@@ -637,7 +637,7 @@ const NavigationControlPanel: React.FC<NavigationControlPanelProps> = ({
         }
 
         .connection-status {
-          display: flex;
+          display: none;
           align-items: center;
           gap: 8px;
           font-size: 12px;

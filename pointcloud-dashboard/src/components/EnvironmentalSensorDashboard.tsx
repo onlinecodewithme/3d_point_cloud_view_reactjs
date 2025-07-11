@@ -338,16 +338,16 @@ const EnvironmentalSensorDashboard: React.FC = () => {
             <div className="temp-humidity-grid">
               <div className="sensor-card temperature-card">
                 <div className="sensor-icon">🌡️</div>
-                <div className="sensor-value" style={{ color: getTemperatureColor(sensorData.temperature) }}>
-                  {sensorData.temperature.toFixed(1)}°C
+                <div className="sensor-value" style={{ color: getTemperatureColor(sensorData.temperature || 0) }}>
+                  {(sensorData.temperature || 0).toFixed(1)}°C
                 </div>
                 <div className="sensor-label">Temperature</div>
                 <div className="sensor-bar">
                   <div 
                     className="sensor-fill"
                     style={{
-                      width: `${Math.min((sensorData.temperature / 50) * 100, 100)}%`,
-                      backgroundColor: getTemperatureColor(sensorData.temperature)
+                      width: `${Math.min(((sensorData.temperature || 0) / 50) * 100, 100)}%`,
+                      backgroundColor: getTemperatureColor(sensorData.temperature || 0)
                     }}
                   />
                 </div>
@@ -355,16 +355,16 @@ const EnvironmentalSensorDashboard: React.FC = () => {
               
               <div className="sensor-card humidity-card">
                 <div className="sensor-icon">💧</div>
-                <div className="sensor-value" style={{ color: getHumidityColor(sensorData.humidity) }}>
-                  {sensorData.humidity.toFixed(1)}%
+                <div className="sensor-value" style={{ color: getHumidityColor(sensorData.humidity || 0) }}>
+                  {(sensorData.humidity || 0).toFixed(1)}%
                 </div>
                 <div className="sensor-label">Humidity</div>
                 <div className="sensor-bar">
                   <div 
                     className="sensor-fill"
                     style={{
-                      width: `${sensorData.humidity}%`,
-                      backgroundColor: getHumidityColor(sensorData.humidity)
+                      width: `${sensorData.humidity || 0}%`,
+                      backgroundColor: getHumidityColor(sensorData.humidity || 0)
                     }}
                   />
                 </div>
@@ -378,8 +378,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
             <div className="gas-sensors-grid">
               <div className="sensor-card methane-card">
                 <div className="sensor-icon">🔥</div>
-                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.methanePPM, 100) }}>
-                  {sensorData.methanePPM.toFixed(1)}
+                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.methanePPM || 0, 100) }}>
+                  {(sensorData.methanePPM || 0).toFixed(1)}
                 </div>
                 <div className="sensor-unit">ppm</div>
                 <div className="sensor-label">Methane (MQ-4)</div>
@@ -387,8 +387,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
                   <div 
                     className="sensor-fill"
                     style={{
-                      width: `${Math.min((sensorData.methanePPM / 100) * 100, 100)}%`,
-                      backgroundColor: getGasLevelColor(sensorData.methanePPM, 100)
+                      width: `${Math.min(((sensorData.methanePPM || 0) / 100) * 100, 100)}%`,
+                      backgroundColor: getGasLevelColor(sensorData.methanePPM || 0, 100)
                     }}
                   />
                 </div>
@@ -397,8 +397,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
               
               <div className="sensor-card co-card">
                 <div className="sensor-icon">☠️</div>
-                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.coPPM, 35) }}>
-                  {sensorData.coPPM.toFixed(2)}
+                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.coPPM || 0, 35) }}>
+                  {(sensorData.coPPM || 0).toFixed(2)}
                 </div>
                 <div className="sensor-unit">ppm</div>
                 <div className="sensor-label">Carbon Monoxide</div>
@@ -406,8 +406,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
                   <div 
                     className="sensor-fill"
                     style={{
-                      width: `${Math.min((sensorData.coPPM / 35) * 100, 100)}%`,
-                      backgroundColor: getGasLevelColor(sensorData.coPPM, 35)
+                      width: `${Math.min(((sensorData.coPPM || 0) / 35) * 100, 100)}%`,
+                      backgroundColor: getGasLevelColor(sensorData.coPPM || 0, 35)
                     }}
                   />
                 </div>
@@ -416,8 +416,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
               
               <div className="sensor-card no2-card">
                 <div className="sensor-icon">🌫️</div>
-                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.no2PPM, 1) }}>
-                  {sensorData.no2PPM.toFixed(3)}
+                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.no2PPM || 0, 1) }}>
+                  {(sensorData.no2PPM || 0).toFixed(3)}
                 </div>
                 <div className="sensor-unit">ppm</div>
                 <div className="sensor-label">Nitrogen Dioxide</div>
@@ -425,8 +425,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
                   <div 
                     className="sensor-fill"
                     style={{
-                      width: `${Math.min((sensorData.no2PPM / 1) * 100, 100)}%`,
-                      backgroundColor: getGasLevelColor(sensorData.no2PPM, 1)
+                      width: `${Math.min(((sensorData.no2PPM || 0) / 1) * 100, 100)}%`,
+                      backgroundColor: getGasLevelColor(sensorData.no2PPM || 0, 1)
                     }}
                   />
                 </div>
@@ -441,8 +441,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
             <div className="particulate-grid">
               <div className="sensor-card pm25-card">
                 <div className="sensor-icon">🌫️</div>
-                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.pm25, 35) }}>
-                  {sensorData.pm25.toFixed(1)}
+                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.pm25 || 0, 35) }}>
+                  {(sensorData.pm25 || 0).toFixed(1)}
                 </div>
                 <div className="sensor-unit">μg/m³</div>
                 <div className="sensor-label">PM2.5</div>
@@ -450,8 +450,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
                   <div 
                     className="sensor-fill"
                     style={{
-                      width: `${Math.min((sensorData.pm25 / 35) * 100, 100)}%`,
-                      backgroundColor: getGasLevelColor(sensorData.pm25, 35)
+                      width: `${Math.min(((sensorData.pm25 || 0) / 35) * 100, 100)}%`,
+                      backgroundColor: getGasLevelColor(sensorData.pm25 || 0, 35)
                     }}
                   />
                 </div>
@@ -460,8 +460,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
               
               <div className="sensor-card pm10-card">
                 <div className="sensor-icon">💨</div>
-                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.pm10, 150) }}>
-                  {sensorData.pm10.toFixed(1)}
+                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.pm10 || 0, 150) }}>
+                  {(sensorData.pm10 || 0).toFixed(1)}
                 </div>
                 <div className="sensor-unit">μg/m³</div>
                 <div className="sensor-label">PM10</div>
@@ -469,8 +469,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
                   <div 
                     className="sensor-fill"
                     style={{
-                      width: `${Math.min((sensorData.pm10 / 150) * 100, 100)}%`,
-                      backgroundColor: getGasLevelColor(sensorData.pm10, 150)
+                      width: `${Math.min(((sensorData.pm10 || 0) / 150) * 100, 100)}%`,
+                      backgroundColor: getGasLevelColor(sensorData.pm10 || 0, 150)
                     }}
                   />
                 </div>
@@ -479,8 +479,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
               
               <div className="sensor-card dust-density-card">
                 <div className="sensor-icon">🌪️</div>
-                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.dustDensity, 200) }}>
-                  {sensorData.dustDensity.toFixed(1)}
+                <div className="sensor-value" style={{ color: getGasLevelColor(sensorData.dustDensity || 0, 200) }}>
+                  {(sensorData.dustDensity || 0).toFixed(1)}
                 </div>
                 <div className="sensor-unit">μg/m³</div>
                 <div className="sensor-label">Total Dust Density</div>
@@ -488,8 +488,8 @@ const EnvironmentalSensorDashboard: React.FC = () => {
                   <div 
                     className="sensor-fill"
                     style={{
-                      width: `${Math.min((sensorData.dustDensity / 200) * 100, 100)}%`,
-                      backgroundColor: getGasLevelColor(sensorData.dustDensity, 200)
+                      width: `${Math.min(((sensorData.dustDensity || 0) / 200) * 100, 100)}%`,
+                      backgroundColor: getGasLevelColor(sensorData.dustDensity || 0, 200)
                     }}
                   />
                 </div>
@@ -505,20 +505,20 @@ const EnvironmentalSensorDashboard: React.FC = () => {
               <div className="status-card">
                 <div className="status-icon">🌡️</div>
                 <div className="status-label">Temperature Status</div>
-                <div className="status-value" style={{ color: getTemperatureColor(sensorData.temperature) }}>
-                  {sensorData.temperature < 10 ? 'Cold' : 
-                   sensorData.temperature < 25 ? 'Optimal' : 
-                   sensorData.temperature < 35 ? 'Warm' : 'Hot'}
+                <div className="status-value" style={{ color: getTemperatureColor(sensorData.temperature || 0) }}>
+                  {(sensorData.temperature || 0) < 10 ? 'Cold' : 
+                   (sensorData.temperature || 0) < 25 ? 'Optimal' : 
+                   (sensorData.temperature || 0) < 35 ? 'Warm' : 'Hot'}
                 </div>
               </div>
               
               <div className="status-card">
                 <div className="status-icon">💧</div>
                 <div className="status-label">Humidity Status</div>
-                <div className="status-value" style={{ color: getHumidityColor(sensorData.humidity) }}>
-                  {sensorData.humidity < 30 ? 'Dry' : 
-                   sensorData.humidity < 60 ? 'Optimal' : 
-                   sensorData.humidity < 80 ? 'Humid' : 'Very Humid'}
+                <div className="status-value" style={{ color: getHumidityColor(sensorData.humidity || 0) }}>
+                  {(sensorData.humidity || 0) < 30 ? 'Dry' : 
+                   (sensorData.humidity || 0) < 60 ? 'Optimal' : 
+                   (sensorData.humidity || 0) < 80 ? 'Humid' : 'Very Humid'}
                 </div>
               </div>
               
@@ -526,17 +526,17 @@ const EnvironmentalSensorDashboard: React.FC = () => {
                 <div className="status-icon">⚠️</div>
                 <div className="status-label">Gas Safety</div>
                 <div className="status-value" style={{ 
-                  color: (sensorData.methanePPM > 50 || sensorData.coPPM > 9 || sensorData.no2PPM > 0.053) ? '#ff4444' : '#00ff41'
+                  color: ((sensorData.methanePPM || 0) > 50 || (sensorData.coPPM || 0) > 9 || (sensorData.no2PPM || 0) > 0.053) ? '#ff4444' : '#00ff41'
                 }}>
-                  {(sensorData.methanePPM > 50 || sensorData.coPPM > 9 || sensorData.no2PPM > 0.053) ? 'Warning' : 'Safe'}
+                  {((sensorData.methanePPM || 0) > 50 || (sensorData.coPPM || 0) > 9 || (sensorData.no2PPM || 0) > 0.053) ? 'Warning' : 'Safe'}
                 </div>
               </div>
               
               <div className="status-card">
                 <div className="status-icon">🌪️</div>
                 <div className="status-label">Air Quality</div>
-                <div className="status-value" style={{ color: getAirQualityLevel(sensorData.airQualityIndex).color }}>
-                  {getAirQualityLevel(sensorData.airQualityIndex).level}
+                <div className="status-value" style={{ color: getAirQualityLevel(sensorData.airQualityIndex || 0).color }}>
+                  {getAirQualityLevel(sensorData.airQualityIndex || 0).level}
                 </div>
               </div>
             </div>
