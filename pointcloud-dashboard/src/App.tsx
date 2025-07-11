@@ -8,6 +8,8 @@ import RobotControlDashboard from './components/RobotControlDashboard';
 import BatteryDashboard from './components/BatteryDashboard';
 import EnhancedSystemMonitoringDashboard from './components/EnhancedSystemMonitoringDashboard';
 import IMUSensorDashboard from './components/IMUSensorDashboard';
+import EnvironmentalSensorDashboard from './components/EnvironmentalSensorDashboard';
+import RobotStatusDashboard from './components/RobotStatusDashboard';
 
 function App() {
   return (
@@ -71,6 +73,22 @@ function App() {
               <Navigation />
               <main className="imu-sensor-main">
                 <IMUSensorDashboard />
+              </main>
+            </>
+          } />
+          <Route path="/environmental-sensors" element={
+            <>
+              <Navigation />
+              <main className="environmental-sensor-main">
+                <EnvironmentalSensorDashboard />
+              </main>
+            </>
+          } />
+          <Route path="/robot-status" element={
+            <>
+              <Navigation />
+              <main className="robot-status-main">
+                <RobotStatusDashboard />
               </main>
             </>
           } />

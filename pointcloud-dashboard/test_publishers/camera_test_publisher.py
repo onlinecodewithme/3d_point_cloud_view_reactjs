@@ -27,6 +27,7 @@ class CameraTestPublisher(Node):
         super().__init__('camera_test_publisher')
         
         # Create publishers for different camera topics
+        self.zed_rgb_pub = self.create_publisher(Image, '/zed/zed_node/rgb/image_rect_color', 10)  # Main topic for dashboard
         self.zed_left_pub = self.create_publisher(Image, '/zed/zed_node/left/image_rect_color', 10)
         self.zed_right_pub = self.create_publisher(Image, '/zed/zed_node/right/image_rect_color', 10)
         self.zed_depth_pub = self.create_publisher(Image, '/zed/zed_node/depth/depth_registered', 10)
@@ -47,6 +48,7 @@ class CameraTestPublisher(Node):
         
         self.get_logger().info('Camera Test Publisher started')
         self.get_logger().info('Publishing to:')
+        self.get_logger().info('  /zed/zed_node/rgb/image_rect_color (MAIN - for dashboard)')
         self.get_logger().info('  /zed/zed_node/left/image_rect_color')
         self.get_logger().info('  /zed/zed_node/right/image_rect_color')
         self.get_logger().info('  /zed/zed_node/depth/depth_registered')
@@ -202,6 +204,11 @@ class CameraTestPublisher(Node):
         header.frame_id = "camera_link"
         
         try:
+            # RGB camera (MAIN - for dashboard)
+            rgb_msg = self.bridge.cv2_to_imgmsg(left_img, "bgr8")
+            rgb_msg.header = header
+            self.zed_rgb_pub.publish(rgb_msg)
+            
             # Left camera
             left_msg = self.bridge.cv2_to_imgmsg(left_img, "bgr8")
             left_msg.header = header
