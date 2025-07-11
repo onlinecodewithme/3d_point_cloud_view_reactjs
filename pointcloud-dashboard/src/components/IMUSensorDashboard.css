@@ -1,0 +1,994 @@
+.imu-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+}
+
+.imu-header {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.imu-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.imu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.threshold-settings-button {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(45deg, #00aaff, #0088cc);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.threshold-settings-button:hover {
+  background: linear-gradient(45deg, #00ccff, #00aaff);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 170, 255, 0.3);
+}
+
+.imu-title h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  background: linear-gradient(45deg, #00ff41, #00aaff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.status-indicator {
+  font-size: 1.2rem;
+  animation: pulse 2s infinite;
+}
+
+.status-indicator.connected {
+  color: #00ff41;
+}
+
+.status-indicator.disconnected {
+  color: #ff4444;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.imu-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.imu-section {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.imu-section h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #00ff41;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Orientation Visualization */
+.orientation-section {
+  background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, rgba(0, 170, 255, 0.1) 100%);
+}
+
+.orientation-visualizer {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  align-items: center;
+}
+
+.attitude-indicator {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  background: #000;
+}
+
+.horizon-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.horizon {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  left: -50px;
+  top: -50px;
+  transition: transform 0.1s ease-out;
+}
+
+.horizon-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.sky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, #87CEEB, #4682B4);
+}
+
+.ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, #8B4513, #D2691E);
+}
+
+.aircraft-symbol {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.aircraft-center {
+  width: 8px;
+  height: 8px;
+  background: #ffff00;
+  border-radius: 50%;
+  position: relative;
+}
+
+.aircraft-wings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 3px;
+  background: #ffff00;
+}
+
+.aircraft-wings::before,
+.aircraft-wings::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 3px;
+  background: #ffff00;
+}
+
+.aircraft-wings::before {
+  left: -25px;
+}
+
+.aircraft-wings::after {
+  right: -25px;
+}
+
+.pitch-scale {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.pitch-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+  width: 100px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.6);
+  margin-left: -50px;
+}
+
+.pitch-label {
+  position: absolute;
+  right: -30px;
+  top: -8px;
+  font-size: 10px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.roll-scale {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+}
+
+.roll-pointer {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 15px solid #ffff00;
+  transition: transform 0.1s ease-out;
+}
+
+.roll-tick {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 50%;
+  transform-origin: bottom center;
+}
+
+.roll-mark {
+  width: 2px;
+  height: 15px;
+  background: rgba(255, 255, 255, 0.8);
+  margin: 0 auto;
+}
+
+.roll-label {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.compass {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 100%);
+  margin: 0 auto;
+}
+
+.compass-rose {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border-radius: 50%;
+  transition: transform 0.1s ease-out;
+}
+
+.compass-direction {
+  position: absolute;
+  font-weight: bold;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.compass-direction.north {
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ff4444;
+}
+
+.compass-direction.east {
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.compass-direction.south {
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.compass-direction.west {
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.compass-tick {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 50%;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.5);
+  transform-origin: bottom center;
+  margin-left: -1px;
+}
+
+.compass-pointer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 20px solid #ff4444;
+  z-index: 10;
+}
+
+.compass-heading {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: #00ff41;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.compass-label {
+  position: absolute;
+  bottom: -55px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #cccccc;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* Axis Reference */
+.axis-reference {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.axis-reference h4 {
+  margin: 0 0 1rem 0;
+  color: #00aaff;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.axis-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.axis-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.axis-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 170, 255, 0.3);
+}
+
+.axis-label {
+  font-weight: bold;
+  color: #00ff41;
+  font-size: 0.95rem;
+  min-width: 80px;
+}
+
+.axis-desc {
+  color: #cccccc;
+  font-size: 0.9rem;
+  text-align: right;
+  flex: 1;
+  margin-left: 1rem;
+}
+
+/* Euler Angles */
+.euler-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.euler-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.euler-label {
+  font-size: 1rem;
+  color: #cccccc;
+  margin-bottom: 0.5rem;
+}
+
+.euler-value {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.euler-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.euler-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Sensor Data */
+.sensor-data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.sensor-group {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.sensor-group:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.sensor-group h3 {
+  margin: 0 0 1rem 0;
+  color: #00aaff;
+  font-size: 1.1rem;
+}
+
+.quaternion-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.quat-value {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.quat-value:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 255, 65, 0.3);
+}
+
+.quat-label {
+  font-weight: bold;
+  color: #cccccc;
+  font-size: 0.9rem;
+}
+
+.quat-number {
+  font-family: 'Courier New', monospace;
+  color: #00ff41;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: right;
+  min-width: 80px;
+  word-break: break-all;
+}
+
+.vector-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vector-value {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.vector-value:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 170, 255, 0.3);
+}
+
+.vector-label {
+  font-weight: bold;
+  color: #cccccc;
+  font-size: 0.9rem;
+  min-width: 20px;
+}
+
+.vector-number {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 0.95rem;
+  text-align: right;
+  min-width: 70px;
+}
+
+.vector-magnitude {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(0, 255, 65, 0.15), rgba(0, 170, 255, 0.1));
+  border: 1px solid rgba(0, 255, 65, 0.2);
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  color: #00ff41;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0, 255, 65, 0.1);
+}
+
+/* Data Charts */
+.data-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 2rem;
+}
+
+.chart-container {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.chart-container h4 {
+  margin: 0 0 1rem 0;
+  color: #00aaff;
+  text-align: center;
+}
+
+.data-chart {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  display: block;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.chart-legend span {
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.chart-legend span:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* System Information */
+.system-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.info-label {
+  font-size: 0.9rem;
+  color: #cccccc;
+  margin-bottom: 0.5rem;
+}
+
+.info-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #00ff41;
+  font-family: 'Courier New', monospace;
+}
+
+/* Loading State */
+.imu-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 2rem;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left: 4px solid #00ff41;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 1.2rem;
+  color: #cccccc;
+  text-align: center;
+}
+
+.test-data-controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.test-data-button {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(45deg, #00ff41, #00aaff);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.test-data-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 65, 0.3);
+}
+
+.test-data-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.test-data-button.stop {
+  background: linear-gradient(45deg, #ff4444, #ff6666);
+  color: #fff;
+}
+
+.test-data-button.stop:hover {
+  box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .imu-content {
+    padding: 1rem;
+  }
+  
+  .orientation-visualizer {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .attitude-indicator,
+  .compass {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .euler-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sensor-data-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .data-charts {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-container {
+    padding: 1rem;
+  }
+  
+  .data-chart {
+    width: 100%;
+    height: 120px;
+  }
+}
+
+.data-chart {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: block;
+}
+
+/* Threshold Settings */
+.threshold-settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.threshold-settings-panel {
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(22, 33, 62, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.threshold-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.threshold-header h3 {
+  margin: 0;
+  color: #00ff41;
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ff4444;
+}
+
+.threshold-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.threshold-group {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.threshold-group h4 {
+  margin: 0 0 1rem 0;
+  color: #00aaff;
+  font-size: 1.1rem;
+  text-transform: capitalize;
+}
+
+.threshold-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.threshold-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.threshold-input label {
+  font-size: 0.9rem;
+  color: #cccccc;
+  font-weight: 500;
+}
+
+.threshold-input input {
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.threshold-input input:focus {
+  outline: none;
+  border-color: #00aaff;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.2);
+}
+
+.threshold-input .unit {
+  font-size: 0.8rem;
+  color: #999999;
+  margin-top: 0.25rem;
+}
+
+.threshold-actions {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+}
+
+.reset-button {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(45deg, #ff6b35, #f7931e);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-button:hover {
+  background: linear-gradient(45deg, #ff8c5a, #ffb347);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+@media (max-width: 480px) {
+  .imu-title h1 {
+    font-size: 1.5rem;
+  }
+  
+  .attitude-indicator,
+  .compass {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .system-info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .threshold-settings-panel {
+    padding: 1.5rem;
+    width: 95%;
+  }
+  
+  .threshold-inputs {
+    grid-template-columns: 1fr;
+  }
+}

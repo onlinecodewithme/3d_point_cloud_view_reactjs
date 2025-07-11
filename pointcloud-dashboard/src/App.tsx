@@ -7,6 +7,7 @@ import EnhancedPointCloudVisualization from './components/EnhancedPointCloudVisu
 import RobotControlDashboard from './components/RobotControlDashboard';
 import BatteryDashboard from './components/BatteryDashboard';
 import EnhancedSystemMonitoringDashboard from './components/EnhancedSystemMonitoringDashboard';
+import IMUSensorDashboard from './components/IMUSensorDashboard';
 
 function App() {
   return (
@@ -62,6 +63,14 @@ function App() {
               <Navigation />
               <main className="enhanced-system-monitoring-main">
                 <EnhancedSystemMonitoringDashboard />
+              </main>
+            </>
+          } />
+          <Route path="/imu-sensor" element={
+            <>
+              <Navigation />
+              <main className="imu-sensor-main">
+                <IMUSensorDashboard />
               </main>
             </>
           } />
