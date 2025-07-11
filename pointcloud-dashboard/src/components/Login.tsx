@@ -103,34 +103,16 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       
       <div className="login-content">
         <div className="robot-showcase">
-          <div className="tracked-robot">
-            <div className="robot-body">
-              <div className="robot-head">
-                <div className="robot-eyes">
-                  <div className="eye left-eye"></div>
-                  <div className="eye right-eye"></div>
-                </div>
-                <div className="robot-antenna"></div>
-              </div>
-              <div className="robot-chassis">
-                <div className="robot-panel">
-                  <div className="status-light active"></div>
-                  <div className="status-light"></div>
-                  <div className="status-light"></div>
-                </div>
-              </div>
-            </div>
-            <div className="robot-tracks">
-              <div className="track left-track">
-                <div className="track-wheel"></div>
-                <div className="track-wheel"></div>
-                <div className="track-wheel"></div>
-              </div>
-              <div className="track right-track">
-                <div className="track-wheel"></div>
-                <div className="track-wheel"></div>
-                <div className="track-wheel"></div>
-              </div>
+          <div className="robot-logo-container">
+            <div className="logo-glow-effect"></div>
+            <img 
+              src="/logo2.png" 
+              alt="Xavier Robot" 
+              className="robot-logo-image"
+            />
+            <div className="logo-overlay-effects">
+              <div className="scanning-line"></div>
+              <div className="pulse-ring"></div>
             </div>
           </div>
           

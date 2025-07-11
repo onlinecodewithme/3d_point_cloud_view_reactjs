@@ -139,36 +139,16 @@ const Register: React.FC = () => {
       
       <div className="register-content">
         <div className="robot-showcase">
-          <div className="assembly-robot">
-            <div className="robot-arm left-arm">
-              <div className="arm-segment"></div>
-              <div className="arm-joint"></div>
-              <div className="arm-segment"></div>
-              <div className="arm-end"></div>
-            </div>
-            
-            <div className="robot-base">
-              <div className="base-platform">
-                <div className="platform-lights">
-                  <div className="light active"></div>
-                  <div className="light"></div>
-                  <div className="light active"></div>
-                </div>
-              </div>
-              <div className="base-column">
-                <div className="column-rings">
-                  <div className="ring"></div>
-                  <div className="ring"></div>
-                  <div className="ring"></div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="robot-arm right-arm">
-              <div className="arm-segment"></div>
-              <div className="arm-joint"></div>
-              <div className="arm-segment"></div>
-              <div className="arm-end"></div>
+          <div className="robot-logo-container">
+            <div className="logo-glow-effect"></div>
+            <img 
+              src="/logo2.png" 
+              alt="Xavier Robot" 
+              className="robot-logo-image"
+            />
+            <div className="logo-overlay-effects">
+              <div className="scanning-line"></div>
+              <div className="pulse-ring"></div>
             </div>
           </div>
           
