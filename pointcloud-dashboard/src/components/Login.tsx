@@ -95,7 +95,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-page">
+      <div className="login-container">
       <div className="login-background">
         <div className="circuit-pattern"></div>
         <div className="floating-particles"></div>
@@ -226,6 +227,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

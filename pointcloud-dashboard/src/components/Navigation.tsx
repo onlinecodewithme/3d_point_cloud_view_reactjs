@@ -106,35 +106,18 @@ const Navigation: React.FC<NavigationProps> = ({ currentUser, onLogout, onDrawer
 
   return (
     <>
-      {/* Top Header */}
-      <header className="top-header">
-        <button 
-          className="hamburger-menu"
-          onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-          aria-label="Toggle menu"
-        >
-          <div className={`hamburger-line ${isDrawerOpen ? 'open' : ''}`}></div>
-          <div className={`hamburger-line ${isDrawerOpen ? 'open' : ''}`}></div>
-          <div className={`hamburger-line ${isDrawerOpen ? 'open' : ''}`}></div>
-        </button>
-        
-        <div className="header-brand">
-          <h1>🤖 Xavier Control Dashboard</h1>
-        </div>
-        
-        <div className="header-status">
-          <div className="status-indicator">
-            <span className="status-dot online">●</span>
-            <span className="status-text">ROS Bridge</span>
-          </div>
-        </div>
-      </header>
-
-      {/* Overlay removed - no gray overlay needed */}
-
       {/* Side Drawer */}
       <nav className={`side-drawer ${isDrawerOpen ? 'open' : ''}`}>
         <div className="drawer-header">
+          <button 
+            className="drawer-toggle"
+            onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+            aria-label="Toggle menu"
+          >
+            <div className={`hamburger-line ${isDrawerOpen ? 'open' : ''}`}></div>
+            <div className={`hamburger-line ${isDrawerOpen ? 'open' : ''}`}></div>
+            <div className={`hamburger-line ${isDrawerOpen ? 'open' : ''}`}></div>
+          </button>
           <div className="xavier-logo">
             <div className="logo-icon">🤖</div>
             <div className="logo-text">

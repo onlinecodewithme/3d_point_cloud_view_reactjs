@@ -243,6 +243,7 @@
 .connection-status {
   font-size: 0.8rem;
   flex-shrink: 0;
+  display: none;
 }
 
 .status-indicator {
@@ -783,6 +784,7 @@
 /* Map component connection status */
 .occupancy-map-viewer .connection-status {
   position: absolute;
+  display: none;
   bottom: 5px;
   right: 10px;
   font-size: 0.7rem;

@@ -131,7 +131,8 @@ const Register: React.FC = () => {
   }
 
   return (
-    <div className="register-container">
+    <div className="register-page">
+      <div className="register-container">
       <div className="register-background">
         <div className="circuit-pattern"></div>
         <div className="floating-particles"></div>
@@ -311,6 +312,7 @@ const Register: React.FC = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

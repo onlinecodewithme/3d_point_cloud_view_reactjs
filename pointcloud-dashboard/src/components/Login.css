@@ -1,4 +1,4 @@
-.login-container {
+.login-page .login-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -8,7 +8,7 @@
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 30%, #16213e 60%, #0f1419 100%);
 }
 
-.login-background {
+.login-page .login-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -17,7 +17,7 @@
   z-index: 1;
 }
 
-.circuit-pattern {
+.login-page .circuit-pattern {
   position: absolute;
   top: 0;
   left: 0;
@@ -30,14 +30,14 @@
   animation: circuitPulse 4s ease-in-out infinite;
 }
 
-.floating-particles {
+.login-page .floating-particles {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-.floating-particles::before,
-.floating-particles::after {
+.login-page .floating-particles::before,
+.login-page .floating-particles::after {
   content: '';
   position: absolute;
   width: 4px;
@@ -47,13 +47,13 @@
   animation: float 6s ease-in-out infinite;
 }
 
-.floating-particles::before {
+.login-page .floating-particles::before {
   top: 20%;
   left: 10%;
   animation-delay: 0s;
 }
 
-.floating-particles::after {
+.login-page .floating-particles::after {
   top: 60%;
   right: 15%;
   animation-delay: 3s;
@@ -70,7 +70,7 @@
   66% { transform: translateY(10px) rotate(240deg); }
 }
 
-.login-content {
+.login-page .login-content {
   display: flex;
   width: 100%;
   max-width: 1200px;
@@ -86,7 +86,7 @@
   padding: 15px;
 }
 
-.robot-showcase {
+.login-page .robot-showcase {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -97,7 +97,7 @@
   border-radius: 20px 0 0 20px;
 }
 
-.robot-logo-container {
+.login-page .robot-logo-container {
   position: relative;
   margin-bottom: 30px;
   display: flex;
@@ -360,7 +360,7 @@
   animation: statusPulse 2s ease-in-out infinite;
 }
 
-.login-form-container {
+.login-page .login-form-container {
   flex: 1;
   padding: 40px;
   display: flex;
@@ -368,12 +368,12 @@
   justify-content: center;
 }
 
-.login-header {
+.login-page .login-header {
   text-align: center;
   margin-bottom: 30px;
 }
 
-.login-header h1 {
+.login-page .login-header h1 {
   font-size: 2.5rem;
   color: #ffffff;
   margin-bottom: 10px;
@@ -383,36 +383,36 @@
   background-clip: text;
 }
 
-.login-header p {
+.login-page .login-header p {
   color: #cccccc;
   font-size: 1.1rem;
 }
 
-.login-form {
+.login-page .login-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.form-group {
+.login-page .form-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.form-group label {
+.login-page .form-group label {
   color: #ffffff;
   font-weight: 500;
   font-size: 0.9rem;
 }
 
-.input-container {
+.login-page .input-container {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-icon {
+.login-page .input-icon {
   position: absolute;
   left: 15px;
   top: 50%;
@@ -424,9 +424,9 @@
   justify-content: center;
 }
 
-.input-container input {
+.login-page .input-container input {
   width: 100%;
-  padding: 15px 20px 15px 45px !important;
+  padding: 15px 20px 15px 55px;
   background: rgba(255, 255, 255, 0.05);
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
@@ -435,18 +435,18 @@
   transition: all 0.3s ease;
 }
 
-.input-container input:focus {
+.login-page .input-container input:focus {
   outline: none;
   border-color: #00ff41;
   box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
   background: rgba(255, 255, 255, 0.08);
 }
 
-.input-container input::placeholder {
+.login-page .input-container input::placeholder {
   color: #888888;
 }
 
-.error-message {
+.login-page .error-message {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -458,7 +458,7 @@
   border: 1px solid rgba(255, 68, 68, 0.3);
 }
 
-.login-button {
+.login-page .login-button {
   padding: 15px 30px;
   background: linear-gradient(135deg, #00ff41 0%, #00aaff 100%);
   border: none;
@@ -475,22 +475,22 @@
   margin-top: 10px;
 }
 
-.login-button:hover {
+.login-page .login-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(0, 255, 65, 0.4);
 }
 
-.login-button:disabled {
+.login-page .login-button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
 }
 
-.login-button.loading {
+.login-page .login-button.loading {
   background: linear-gradient(135deg, #666666 0%, #888888 100%);
 }
 
-.loading-spinner {
+.login-page .loading-spinner {
   width: 20px;
   height: 20px;
   border: 2px solid transparent;
@@ -499,25 +499,25 @@
   animation: spin 1s linear infinite;
 }
 
-.demo-accounts {
+.login-page .demo-accounts {
   margin-top: 30px;
   text-align: center;
 }
 
-.demo-accounts p {
+.login-page .demo-accounts p {
   color: #cccccc;
   margin-bottom: 15px;
   font-size: 0.9rem;
 }
 
-.demo-buttons {
+.login-page .demo-buttons {
   display: flex;
   gap: 10px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.demo-button {
+.login-page .demo-button {
   padding: 8px 16px;
   border: 2px solid;
   border-radius: 8px;
@@ -531,50 +531,50 @@
   gap: 5px;
 }
 
-.demo-button.admin {
+.login-page .demo-button.admin {
   border-color: #00ff41;
 }
 
-.demo-button.admin:hover {
+.login-page .demo-button.admin:hover {
   background: rgba(0, 255, 65, 0.1);
   box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
 }
 
-.demo-button.operator {
+.login-page .demo-button.operator {
   border-color: #00aaff;
 }
 
-.demo-button.operator:hover {
+.login-page .demo-button.operator:hover {
   background: rgba(0, 170, 255, 0.1);
   box-shadow: 0 0 15px rgba(0, 170, 255, 0.3);
 }
 
-.demo-button.engineer {
+.login-page .demo-button.engineer {
   border-color: #ffaa00;
 }
 
-.demo-button.engineer:hover {
+.login-page .demo-button.engineer:hover {
   background: rgba(255, 170, 0, 0.1);
   box-shadow: 0 0 15px rgba(255, 170, 0, 0.3);
 }
 
-.login-footer {
+.login-page .login-footer {
   text-align: center;
   margin-top: 30px;
 }
 
-.login-footer p {
+.login-page .login-footer p {
   color: #cccccc;
   font-size: 0.9rem;
 }
 
-.login-footer a {
+.login-page .login-footer a {
   color: #00ff41;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.login-footer a:hover {
+.login-page .login-footer a:hover {
   color: #00aaff;
 }
 

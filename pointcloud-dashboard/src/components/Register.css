@@ -1,4 +1,4 @@
-.register-container {
+.register-page .register-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -8,7 +8,7 @@
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 30%, #16213e 60%, #0f1419 100%);
 }
 
-.register-background {
+.register-page .register-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -17,7 +17,7 @@
   z-index: 1;
 }
 
-.circuit-pattern {
+.register-page .circuit-pattern {
   position: absolute;
   top: 0;
   left: 0;
@@ -30,14 +30,14 @@
   animation: circuitPulse 4s ease-in-out infinite;
 }
 
-.floating-particles {
+.register-page .floating-particles {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-.floating-particles::before,
-.floating-particles::after {
+.register-page .floating-particles::before,
+.register-page .floating-particles::after {
   content: '';
   position: absolute;
   width: 4px;
@@ -47,13 +47,13 @@
   animation: float 6s ease-in-out infinite;
 }
 
-.floating-particles::before {
+.register-page .floating-particles::before {
   top: 20%;
   left: 10%;
   animation-delay: 0s;
 }
 
-.floating-particles::after {
+.register-page .floating-particles::after {
   top: 60%;
   right: 15%;
   animation-delay: 3s;
@@ -70,7 +70,7 @@
   66% { transform: translateY(10px) rotate(240deg); }
 }
 
-.register-content {
+.register-page .register-content {
   display: flex;
   width: 100%;
   max-width: 1400px;
@@ -86,7 +86,7 @@
   padding: 15px;
 }
 
-.robot-showcase {
+.register-page .robot-showcase {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -98,7 +98,7 @@
 }
 
 /* Robot Logo Container */
-.robot-logo-container {
+.register-page .robot-logo-container {
   position: relative;
   margin-bottom: 30px;
   display: flex;
@@ -108,7 +108,7 @@
 }
 
 /* Robot Logo Image Styles */
-.logo-glow-effect {
+.register-page .logo-glow-effect {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -127,7 +127,7 @@
   z-index: 1;
 }
 
-.robot-logo-image {
+.register-page .robot-logo-image {
   width: 280px;
   height: 280px;
   object-fit: contain;
@@ -150,7 +150,7 @@
   padding: 20px 30px;
 }
 
-.robot-logo-image:hover {
+.register-page .robot-logo-image:hover {
   transform: scale(1.05);
   box-shadow: 
     0 25px 50px rgba(0, 0, 0, 0.5),
@@ -158,7 +158,7 @@
     inset 0 0 30px rgba(255, 255, 255, 0.15);
 }
 
-.logo-overlay-effects {
+.register-page .logo-overlay-effects {
   position: absolute;
   top: 0;
   left: 0;
@@ -168,7 +168,7 @@
   z-index: 3;
 }
 
-.scanning-line {
+.register-page .scanning-line {
   position: absolute;
   top: 0;
   left: 0;
@@ -182,7 +182,7 @@
   opacity: 0.7;
 }
 
-.pulse-ring {
+.register-page .pulse-ring {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -353,7 +353,7 @@
   font-size: 1.2rem;
 }
 
-.register-form-container {
+.register-page .register-form-container {
   flex: 1.2;
   padding: 40px;
   display: flex;
@@ -361,12 +361,12 @@
   justify-content: center;
 }
 
-.register-header {
+.register-page .register-header {
   text-align: center;
   margin-bottom: 30px;
 }
 
-.register-header h1 {
+.register-page .register-header h1 {
   font-size: 2.5rem;
   color: #ffffff;
   margin-bottom: 10px;
@@ -376,42 +376,42 @@
   background-clip: text;
 }
 
-.register-header p {
+.register-page .register-header p {
   color: #cccccc;
   font-size: 1.1rem;
 }
 
-.register-form {
+.register-page .register-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.form-row {
+.register-page .form-row {
   display: flex;
   gap: 20px;
 }
 
-.form-group {
+.register-page .form-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
   flex: 1;
 }
 
-.form-group label {
+.register-page .form-group label {
   color: #ffffff;
   font-weight: 500;
   font-size: 0.9rem;
 }
 
-.input-container {
+.register-page .input-container {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-icon {
+.register-page .input-icon {
   position: absolute;
   left: 15px;
   top: 50%;
@@ -423,9 +423,9 @@
   justify-content: center;
 }
 
-.input-container input {
+.register-page .input-container input {
   width: 100%;
-  padding: 15px 20px 15px 45px !important;
+  padding: 15px 20px 15px 55px;
   background: rgba(255, 255, 255, 0.05);
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
@@ -434,35 +434,35 @@
   transition: all 0.3s ease;
 }
 
-.input-container input:focus {
+.register-page .input-container input:focus {
   outline: none;
   border-color: #00ff41;
   box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
   background: rgba(255, 255, 255, 0.08);
 }
 
-.input-container input.error {
+.register-page .input-container input.error {
   border-color: #ff4444;
   box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
 }
 
-.input-container input::placeholder {
+.register-page .input-container input::placeholder {
   color: #888888;
 }
 
-.field-error {
+.register-page .field-error {
   color: #ff4444;
   font-size: 0.8rem;
   margin-top: 4px;
 }
 
-.role-selection {
+.register-page .role-selection {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.role-option {
+.register-page .role-option {
   display: flex;
   align-items: center;
   padding: 15px;
@@ -473,49 +473,49 @@
   transition: all 0.3s ease;
 }
 
-.role-option:hover {
+.register-page .role-option:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.role-option.selected {
+.register-page .role-option.selected {
   border-color: #00ff41;
   background: rgba(0, 255, 65, 0.1);
   box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
 }
 
-.role-icon {
+.register-page .role-icon {
   font-size: 2rem;
   margin-right: 15px;
 }
 
-.role-info {
+.register-page .role-info {
   flex: 1;
 }
 
-.role-title {
+.register-page .role-title {
   color: #ffffff;
   font-weight: 600;
   font-size: 1rem;
   margin-bottom: 4px;
 }
 
-.role-description {
+.register-page .role-description {
   color: #aaaaaa;
   font-size: 0.9rem;
 }
 
-.role-radio {
+.register-page .role-radio {
   margin-left: 15px;
 }
 
-.role-radio input[type="radio"] {
+.register-page .role-radio input[type="radio"] {
   width: 20px;
   height: 20px;
   accent-color: #00ff41;
 }
 
-.register-button {
+.register-page .register-button {
   padding: 15px 30px;
   background: linear-gradient(135deg, #00ff41 0%, #00aaff 100%);
   border: none;
@@ -532,22 +532,22 @@
   margin-top: 20px;
 }
 
-.register-button:hover {
+.register-page .register-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(0, 255, 65, 0.4);
 }
 
-.register-button:disabled {
+.register-page .register-button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
 }
 
-.register-button.loading {
+.register-page .register-button.loading {
   background: linear-gradient(135deg, #666666 0%, #888888 100%);
 }
 
-.loading-spinner {
+.register-page .loading-spinner {
   width: 20px;
   height: 20px;
   border: 2px solid transparent;
@@ -556,23 +556,23 @@
   animation: spin 1s linear infinite;
 }
 
-.register-footer {
+.register-page .register-footer {
   text-align: center;
   margin-top: 30px;
 }
 
-.register-footer p {
+.register-page .register-footer p {
   color: #cccccc;
   font-size: 0.9rem;
 }
 
-.register-footer a {
+.register-page .register-footer a {
   color: #00ff41;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.register-footer a:hover {
+.register-page .register-footer a:hover {
   color: #00aaff;
 }
 
